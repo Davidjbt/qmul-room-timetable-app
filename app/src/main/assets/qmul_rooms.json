@@ -1,0 +1,431 @@
+[
+  {
+    "campus": "Charterhouse Square Campus",
+    "buildings": [
+      {
+        "building": "B/John Vane Science Centre",
+        "rooms": [
+          "CHSQ, John Vane, Willoughby LT (225)"
+        ]
+      },
+      {
+        "building": "B/Joseph Rotblat",
+        "rooms": [
+          "CHSQ, Rotblat, G.02 LT (150)"
+        ]
+      }
+    ]
+  },
+  {
+    "campus": "IoT",
+    "buildings": [
+      {
+        "building": "(Any Building)",
+        "rooms": [
+          "IOT 1.01 PC Lab (50)",
+          "IOT 2.02 PC Lab (31)",
+          "IOT 4.02 PC Lab (31)",
+          "IOT 4.05 (21)",
+          "IOT 5.02 PC Lab (21)",
+          "IOT 5.03 (21)",
+          "IOT 5.04 (21)",
+          "IOT 6.02 PC Lab (31)",
+          "IOT 6.04 (21)",
+          "IOT 7.02 PC Lab (21)",
+          "IOT 7.03 (21)",
+          "IOT 7.04 (21)",
+          "IOT 8.01 PC Lab (31)",
+          "IOT 8.02 PC Lab (21)",
+          "IOT 8.03 (26)",
+          "IOT 8.03/8.04 (81)"
+        ]
+      }
+    ]
+  },
+  {
+    "campus": "Lincoln's Inn Fields Campus",
+    "buildings": [
+      {
+        "building": "(Any Building)",
+        "rooms": [
+          "LIF, 1.1 (20)",
+          "LIF, 1.2 (50)",
+          "LIF, 2.1 (60)",
+          "LIF, 2.2 (30)",
+          "LIF, 3.1 (65)",
+          "LIF, G.1 LT(120)",
+          "LIF, LG.1 (60)",
+          "LIF, LG.2 (23)"
+        ]
+      }
+    ]
+  },
+  {
+    "campus": "Mile End Campus",
+    "buildings": [
+      {
+        "building": "B/Arts One",
+        "rooms": [
+          "Arts One:1.24 (5) (Staff Office)",
+          "Arts One:1.25 (15)",
+          "Arts One:1.28 (36)",
+          "Arts One:1.31 (15)",
+          "Arts One:1.36 (20)",
+          "Arts One:212 (5) (Staff Office)",
+          "Arts One:G19 Hitchcock Cinema (40)",
+          "Arts One:H Pinter",
+          "Arts One:RR1",
+          "Arts One:RR2"
+        ]
+      },
+      {
+        "building": "B/Arts Two",
+        "rooms": [
+          "Arts Two: 2.17 (40)",
+          "Arts Two: 2.18 (18)",
+          "Arts Two: 3.16 (40)",
+          "Arts Two: 3.17 (18)",
+          "Arts Two: 3.20 (45)",
+          "Arts Two: FADS",
+          "Arts Two: LT (304)"
+        ]
+      },
+      {
+        "building": "B/Bancroft Building",
+        "rooms": [
+          "Bancroft: G.07 (32)",
+          "Bancroft: G.13 (14)",
+          "Bancroft: Resource Room 1 (7)",
+          "Bancroft: Resource Room 2 (10)",
+          "Bancroft:1.01 (22)",
+          "Bancroft:1.01.1 (36)",
+          "Bancroft:1.01.2 (26)",
+          "Bancroft:1.02.2 (10)",
+          "Bancroft:1.02.3 (14)",
+          "Bancroft:1.02.5 (15)",
+          "Bancroft:1.02.6 (45)",
+          "Bancroft:1.02.6A (27)",
+          "Bancroft:1.03 (10)",
+          "Bancroft:1.06 (26)",
+          "Bancroft:1.08 (30)",
+          "Bancroft:1.09 (27)",
+          "Bancroft:1.13 (110)",
+          "Bancroft:1.13a (110)",
+          "Bancroft:1.15 [84)",
+          "Bancroft:1.15a PC Lab (100)",
+          "Bancroft:1.23 (71) PC Lab",
+          "Bancroft:2.07 City Centre Seminar Room (24)",
+          "Bancroft:2.40 (130)",
+          "Bancroft:2.41 (32)",
+          "Bancroft:3.15 (25)",
+          "Bancroft:3.16 (24)",
+          "Bancroft:3.17 (24)",
+          "Bancroft:3.18 (24)",
+          "Bancroft:3.20 (28)",
+          "Bancroft:3.21 (26)",
+          "Bancroft:3.22 (26)",
+          "Bancroft:3.23 (28)",
+          "Bancroft:3.24 (28)",
+          "Bancroft:3.26 (67)",
+          "Bancroft:3.27 (28)",
+          "Bancroft:3.40 (38)",
+          "Bancroft:3.44 Innovation Pod (9)",
+          "Bancroft:4.04/4.08 (67)",
+          "Bancroft:David Sizer LT(106)",
+          "Bancroft:Mason-LT (294)"
+        ]
+      },
+      {
+        "building": "B/Computer Science/ITL",
+        "rooms": [
+          "ITL 1F SEM",
+          "ITL 1F-NrtBck-Lab (30)",
+          "ITL 1F-NrtFnt-Lab (27)",
+          "ITL 1F-SthBck-Lab (14)",
+          "ITL 1F-SthFnt-Lab (27)",
+          "ITL 2F-Ctr-Lab (16)",
+          "ITL 2F-Nrt-Lab (37)",
+          "ITL 2F-SthBck-Lab (36)",
+          "ITL GF-NthCtr-Lab (22)",
+          "ITL GF-NthFnt-Lab (15)",
+          "ITL GF-SthBck-Lab (21)",
+          "ITL GF-SthCtr-Lab (23)",
+          "ITL GF-SthFnt-Lab (21)",
+          "TB Lab - 1st Floor (TB-101/102)",
+          "TB Lab - 2nd Floor (TB-201)",
+          "TB Lab - 2nd Floor (TB-202)",
+          "TB Lab - GF (TB-G02)"
+        ]
+      },
+      {
+        "building": "B/Engineering",
+        "rooms": [
+          "Eng: B10 - IoC Lab",
+          "Eng: G2.a",
+          "Eng: G23 Chemical Engineering Lab",
+          "Eng: G25 Combustion Lab",
+          "Eng: G27 LAB",
+          "Eng: G29 Wet Lab",
+          "Eng: G31 Mechanical Teaching Lab",
+          "Eng: G34 Test Lab",
+          "Eng: G3C Human Performance Lab",
+          "Eng:1.12 Design Studio",
+          "Eng:2.09 (108)",
+          "Eng:2.16 (42)",
+          "Eng:3.24 (83)",
+          "Eng:3.25 (86)",
+          "Eng:3.52 LAB (48)",
+          "Eng:3.56 LAB (48)",
+          "Eng:B9 - IoC LT",
+          "Eng:Maker Space"
+        ]
+      },
+      {
+        "building": "B/Fogg",
+        "rooms": [
+          "Fogg LT (136)"
+        ]
+      },
+      {
+        "building": "B/G.O.Jones",
+        "rooms": [
+          "G.O.Jones:204",
+          "G.O.Jones:208 (27)",
+          "G.O.Jones:410A (15)",
+          "G.O.Jones:410B (15)",
+          "G.O.Jones:516 (15)",
+          "G.O.Jones:610",
+          "G.O.Jones:LG1 (60)",
+          "G.O.Jones:LG7 (18)",
+          "G.O.Jones:LT (138)",
+          "G.O.Jones:UG1 (60)"
+        ]
+      },
+      {
+        "building": "B/Geography",
+        "rooms": [
+          "Geog:1.26 (117)",
+          "Geog:2.20 (46)",
+          "Geog:2.26 (72)",
+          "Geog:DLT(207)"
+        ]
+      },
+      {
+        "building": "B/Graduate Centre",
+        "rooms": [
+          "Graduate Ctr: GC101 (59)",
+          "Graduate Ctr: GC102 (19)",
+          "Graduate Ctr: GC103 (22)",
+          "Graduate Ctr: GC104 (22)",
+          "Graduate Ctr: GC105 (20)",
+          "Graduate Ctr: GC114 (36)",
+          "Graduate Ctr: GC201 (100)",
+          "Graduate Ctr: GC202 (28]",
+          "Graduate Ctr: GC203 (28]",
+          "Graduate Ctr: GC204 (36)",
+          "Graduate Ctr: GC205 (30)",
+          "Graduate Ctr: GC222 (40)",
+          "Graduate Ctr: GC601 Montagu LT (58)",
+          "Graduate Ctr: GC602 (21)",
+          "Graduate Ctr: GC603 (28)",
+          "Graduate Ctr: GC604 (25)",
+          "Graduate Ctr: GCG10 Peston LT (200)"
+        ]
+      },
+      {
+        "building": "B/iQ East Court",
+        "rooms": [
+          "iQ East Court (Scape): 0.11 (20)",
+          "iQ East Court (Scape): 0.12 (20)",
+          "iQ East Court (Scape): 0.13 (20)",
+          "iQ East Court (Scape): 0.14 (66)",
+          "iQ East Court (Scape): 1.02 (20)",
+          "iQ East Court (Scape): 1.03 (20)",
+          "iQ East Court (Scape): 1.04 (36)",
+          "iQ East Court (Scape): 1.05 (18)",
+          "iQ East Court (Scape): 2.01 (36)",
+          "iQ East Court (Scape): 3.01 (36)"
+        ]
+      },
+      {
+        "building": "B/Laws",
+        "rooms": [
+          "Laws: G.5 (46)",
+          "Laws: G3 (15)",
+          "Laws:100 (44)",
+          "Laws:102 (44)",
+          "Laws:112 (55)",
+          "Laws:119 (30)",
+          "Laws:207 (42)",
+          "Laws:209 (24)",
+          "Laws:210 (60)",
+          "Laws:306 (20)",
+          "Laws:308a (15)",
+          "Laws:308b (20)",
+          "Laws:308c (20)",
+          "Laws:308d (20)"
+        ]
+      },
+      {
+        "building": "B/Lock Keepers",
+        "rooms": []
+      },
+      {
+        "building": "B/Maths",
+        "rooms": [
+          "Maths.:MLT(144)",
+          "Maths: MB-203 (36)",
+          "Maths: MB-204 (48)",
+          "Maths: MB-302 PC lab (36)",
+          "Maths: MB-503 (41)"
+        ]
+      },
+      {
+        "building": "B/People's Palace",
+        "rooms": [
+          "PP:Great Hall (600)",
+          "PP:PP1 (105)",
+          "PP:PP2 (105)",
+          "PP:Skeel-LT(247)"
+        ]
+      },
+      {
+        "building": "B/Peter Landin",
+        "rooms": [
+          "Peter Landin: PL-301 (42)",
+          "Peter Landin: PL-302 (61)",
+          "Peter Landin: PL-401 (42)"
+        ]
+      },
+      {
+        "building": "B/Queens'",
+        "rooms": [
+          "Queens: LG1 (60)",
+          "Queens: LG2 (45)",
+          "Queens: LG3 (47)",
+          "Queens: LG4 (34)",
+          "Queens: LG5 PC lab [49]",
+          "Queens: LG6 (57)",
+          "Queens: QB-201 (24)",
+          "Queens: QB-202 PC Lab (100)",
+          "Queens: QB-203 EECS (84)",
+          "Queens: QB-207 (30)",
+          "Queens: QB-209 PC Lab [60]",
+          "Queens: QB-210 (30)",
+          "Queens: QB-211 (18)",
+          "Queens: QB-212 PC Lab [60]",
+          "Queens: QB-213 (42)",
+          "Queens: QB-215 (27)"
+        ]
+      },
+      {
+        "building": "B/Scape Canalside",
+        "rooms": [
+          "Scape Canalside TR1 (35)",
+          "Scape Canalside TR2 (28)",
+          "Scape Canalside TR3 (28)",
+          "Scape Canalside TR4 (22)"
+        ]
+      }
+    ]
+  },
+  {
+    "campus": "West Smithfield Campus",
+    "buildings": [
+      {
+        "building": "B/Robin Brook Centre",
+        "rooms": [
+          "RBC, 1.09, IT Lab (40)",
+          "RBC, Bainbridge Room (75)",
+          "RBC, Dean's Conference Room",
+          "RBC, Morris LT (215)",
+          "RBC, Paterson Ross LT [60)",
+          "RBC, Seminar Room 4 [Boyle Room] (50)",
+          "RBC, Seminar Room 5 (24)",
+          "RBC, Seminar Room 6 (24)",
+          "RBC, Seminar Room 7 (16)",
+          "RBC, Seminar Room 8 (16)"
+        ]
+      }
+    ]
+  },
+  {
+    "campus": "Whitechapel Campus",
+    "buildings": [
+      {
+        "building": "B/Abernethy",
+        "rooms": [
+          "WCH, Abernethy, Room A (44)",
+          "WCH, Abernethy, Room B [20)"
+        ]
+      },
+      {
+        "building": "B/Alexandra Wing (RLH)",
+        "rooms": [
+          "WCH, RLH Alex Wing, Bearsted LT (210)",
+          "WCH, RLH Alex Wing, John Ellis LT (104)"
+        ]
+      },
+      {
+        "building": "B/Blizard",
+        "rooms": [
+          "WCH, Blizard, Perrin LT (409)"
+        ]
+      },
+      {
+        "building": "B/Floyer House",
+        "rooms": [
+          "WCH, Floyer, Laird Hall (100)"
+        ]
+      },
+      {
+        "building": "B/Garrod",
+        "rooms": [
+          "WCH, Garrod G.08",
+          "WCH, Garrod, 1.21 (30)",
+          "WCH, Garrod, 1.23 Office (12)",
+          "WCH, Garrod, 1.26 (10)",
+          "WCH, Garrod, 1.26A (10)",
+          "WCH, Garrod, 1.27 (10)",
+          "WCH, Garrod, 1.27A (10)",
+          "WCH, Garrod, 1.28 (10)",
+          "WCH, Garrod, 1.28A (10)",
+          "WCH, Garrod, 1.29 (10)",
+          "WCH, Garrod, 1.29A (10)",
+          "WCH, Garrod, 1.30 (24)",
+          "WCH, Garrod, 1.32 (24)",
+          "WCH, Garrod, 2.06N/A (10)",
+          "WCH, Garrod, 2.07N/A(16)",
+          "WCH, Garrod, 2.34 ICT Suite (80)",
+          "WCH, Garrod, 2.35 (48)",
+          "WCH, Garrod, 2.39R (16)",
+          "WCH, Garrod, 2.44 (10)",
+          "WCH, Garrod, 2.44A (12)",
+          "WCH, Garrod, 2.48R (32)",
+          "WCH, Garrod, 2M.02R (14)",
+          "WCH, Garrod, 2M.03R (10)",
+          "WCH, Garrod, 2M.04R (12)",
+          "WCH, Garrod, 3.03 (20)",
+          "WCH, Garrod, 3.04 (26)",
+          "WCH, Garrod, 3.05 (10)",
+          "WCH, Garrod, 3.06 (38)",
+          "WCH, Garrod, 3.10R (12)",
+          "WCH, Garrod, G.23 Milton LT (120)",
+          "WCH, Garrod, Old Library"
+        ]
+      },
+      {
+        "building": "B/Innovation Centre",
+        "rooms": [
+          "WCH, Innovation Centre, Clark-Kennedy LT (122)"
+        ]
+      },
+      {
+        "building": "B/Yvonne Carter",
+        "rooms": [
+          "WCH, Carter, Michael Mason (40)"
+        ]
+      }
+    ]
+  }
+]

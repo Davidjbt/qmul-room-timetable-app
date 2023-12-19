@@ -1,8 +1,9 @@
 package com.david.qmul_room_timetable_app
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,6 +12,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addRoomTimetableQuery(view: View) {
+        val intent = Intent(this, AddRoomTimetable::class.java)
+        startActivity(intent)
 
     }
 }
