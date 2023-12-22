@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "com.david.qmul_room_timetable_app";
+option java_multiple_files = true;
+
+message RoomTimetableQuery {
+
+  string campus = 1;
+  string building = 2;
+  repeated string rooms = 3;
+}
+
