@@ -1,9 +1,13 @@
 package com.david.qmul_room_timetable_app
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
@@ -24,8 +28,20 @@ class MainActivity : AppCompatActivity() {
 
     fun addRoomTimetableQuery(view: View) {
         val intent = Intent(this, AddRoomTimetable::class.java)
-        startActivity(intent)
+        startForResult.launch(intent)
+    }
 
+    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    val roomTimetable = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
+
+                    Toast.makeText(this, "Rooms: ${roomTimetable?.rooms?.size}", Toast.LENGTH_SHORT).show()
+                }
+
+            }
     }
 
 }

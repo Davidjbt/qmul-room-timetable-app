@@ -1,6 +1,8 @@
 package com.david.qmul_room_timetable_app
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -12,16 +14,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.david.qmul_room_timetable_app.model.Building
 import com.david.qmul_room_timetable_app.model.Campus
 import com.david.qmul_room_timetable_app.util.JsonParser
+import java.io.Serializable
 
 class AddRoomTimetable : AppCompatActivity() {
 
-    private lateinit var campusList: List<Campus>
+    private lateinit var autoCompleteTextViewCampus: AutoCompleteTextView;
+    private lateinit var autoCompleteTextViewBuilding: AutoCompleteTextView
     private lateinit var adapterBuilding: ArrayAdapter<String>
     private lateinit var adapterCampus: ArrayAdapter<String>
     private lateinit var textViewRooms: TextView
+    private lateinit var campusList: List<Campus>
     private lateinit var selectedCampus: Campus
     private lateinit var selectedBuilding: Building
-    private lateinit var selectedRooms: Array<String>
+    private lateinit var selectedRooms: ArrayList<String>
     private lateinit var selectedRoomsBoolean: BooleanArray
     private lateinit var roomsList: ArrayList<Int>
     private lateinit var roomsArray: Array<String>
@@ -33,8 +38,8 @@ class AddRoomTimetable : AppCompatActivity() {
         val jsonParser = JsonParser(this)
         campusList = jsonParser.parseJsonData()
 
-        val autoCompleteTextViewCampus = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView2)
-        val autoCompleteTextViewBuilding = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView5)
+        autoCompleteTextViewCampus = findViewById(R.id.autoCompleteTextView2)
+        autoCompleteTextViewBuilding = findViewById(R.id.autoCompleteTextView5)
         textViewRooms = findViewById(R.id.textView)
         adapterCampus = ArrayAdapter(this, R.layout.dropdown_item, getCampusNames())
         adapterBuilding = ArrayAdapter(this, R.layout.dropdown_item, mutableListOf<String>())
@@ -51,7 +56,7 @@ class AddRoomTimetable : AppCompatActivity() {
         autoCompleteTextViewBuilding.setOnItemClickListener { _, _, position, _ ->
             selectedBuilding = selectedCampus.buildings[position]
             Toast.makeText(this, "Item: ${selectedBuilding.building}", Toast.LENGTH_SHORT).show()
-            updateRoomDropdown();
+            updateRoomDropdown()
         }
     }
 
@@ -63,12 +68,15 @@ class AddRoomTimetable : AppCompatActivity() {
         adapterBuilding.clear()
         adapterBuilding.addAll(buildingNames)
         adapterBuilding.notifyDataSetChanged()
+        textViewRooms.text = ""
     }
 
     private fun updateRoomDropdown() {
         roomsArray = selectedBuilding.rooms.toTypedArray();
         roomsList = ArrayList()
         selectedRoomsBoolean = BooleanArray(roomsArray.size)
+        selectedRooms = ArrayList()
+        textViewRooms.text = ""
     }
 
     fun showRoomsDialog(view: View) {
@@ -91,6 +99,7 @@ class AddRoomTimetable : AppCompatActivity() {
             val stringBuilder: StringBuilder = StringBuilder()
 
             for (j in 0 until roomsList.size) {
+                selectedRooms.add(roomsArray[roomsList[j]])
                 stringBuilder.append(roomsArray[roomsList[j]])
 
                 if (j != roomsList.size - 1) {
@@ -111,9 +120,29 @@ class AddRoomTimetable : AppCompatActivity() {
             selectedRoomsBoolean.fill(false)
             roomsList.clear()
             textViewRooms.text = ""
+            selectedRooms.clear();
         }
 
         builder.show()
     }
+
+    fun addRoomTimetableQuery(view: View) {
+        val intent = Intent()
+        val roomTimetableQuery = RoomTimetableQuery(
+            selectedCampus.campus,
+            selectedBuilding.building,
+            selectedRooms.toTypedArray()
+        )
+
+        intent.putExtra("roomTimetableQuery", roomTimetableQuery)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
+    data class RoomTimetableQuery (
+        val campus: String,
+        val building: String,
+        val rooms: Array<String>
+    ) : Serializable
 
 }
