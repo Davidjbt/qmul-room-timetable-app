@@ -6,20 +6,20 @@ import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream
 
-object RoomTimetableQuerySerializer : Serializer<RoomTimetableQuery> {
+object RoomTimetableQueryListSerializer : Serializer<RoomTimetableQueryList> {
 
-    override val defaultValue: RoomTimetableQuery = RoomTimetableQuery.getDefaultInstance()
+    override val defaultValue: RoomTimetableQueryList = RoomTimetableQueryList.getDefaultInstance()
 
 //    @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun readFrom(input: InputStream): RoomTimetableQuery {
+    override suspend fun readFrom(input: InputStream): RoomTimetableQueryList {
         try {
-            return RoomTimetableQuery.parseFrom(input)
+            return RoomTimetableQueryList.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
         }
     }
 
 //    @Suppress("BlockingMethodInNonBlockingContext")
-    override suspend fun writeTo(t: RoomTimetableQuery, output: OutputStream) = t.writeTo(output)
+    override suspend fun writeTo(t: RoomTimetableQueryList, output: OutputStream) = t.writeTo(output)
 
 }

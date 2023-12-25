@@ -12,12 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 
-private const val ROOM_TIMETABLE_QUERY_NAME = "room_timetable_query"
-private const val DATA_STORE_FILE_NAME = "room_timetable_queries.pb"
+private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
+private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
 
-private val Context.roomTimetableQueryStore: DataStore<RoomTimetableQuery> by dataStore(
+private val Context.roomTimetableQueryListStore: DataStore<RoomTimetableQueryList> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
-    serializer = RoomTimetableQuerySerializer
+    serializer = RoomTimetableQueryListSerializer
 )
 
 class MainActivity : AppCompatActivity() {
@@ -31,14 +31,14 @@ class MainActivity : AppCompatActivity() {
         startForResult.launch(intent)
     }
 
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 if (data != null) {
-                    val roomTimetable = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
+                    val roomTimetableQuery = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
 
-                    Toast.makeText(this, "Rooms: ${roomTimetable?.rooms?.size}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Rooms: ${roomTimetableQuery?.rooms?.size}", Toast.LENGTH_SHORT).show()
                 }
 
             }
