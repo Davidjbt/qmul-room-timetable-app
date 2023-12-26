@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import kotlinx.coroutines.flow.first
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -39,9 +40,25 @@ class MainActivity : AppCompatActivity() {
                     val roomTimetableQuery = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
 
                     Toast.makeText(this, "Rooms: ${roomTimetableQuery?.rooms?.size}", Toast.LENGTH_SHORT).show()
+
+                    if (roomTimetableQuery != null) saveRoomTimetableQuery()
                 }
 
             }
+    }
+
+    private fun saveRoomTimetableQuery(roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) {
+        val currentData = roomTimetableQueryListStore.data.first();
+        val roomTimetableQueryProto = RoomTimetableQuery.newBuilder()
+            .setCampus(roomTimetableQuery.campus)
+            .setBuilding(roomTimetableQuery.building)
+            .addAllRooms(roomTimetableQuery.rooms.map { it })
+
+        val updatedData = currentData.toBuilder()
+            .addRoomTimetableQueryList(roomTimetableQueryProto)
+            .build()
+
+        roomTimetableQueryListStore.updateData { updatedData }
     }
 
 }
