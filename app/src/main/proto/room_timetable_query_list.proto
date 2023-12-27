@@ -4,7 +4,7 @@ option java_package = "com.david.qmul_room_timetable_app";
 option java_multiple_files = true;
 
 message RoomTimetableQueryList {
-  repeated RoomTimetableQuery RoomTimetableQueryList = 1;
+  repeated RoomTimetableQuery room_timetable_query_list = 1;
 }
 
 message RoomTimetableQuery {

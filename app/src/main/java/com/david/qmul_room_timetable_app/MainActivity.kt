@@ -11,7 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -39,16 +41,19 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     val roomTimetableQuery = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
 
-                    Toast.makeText(this, "Rooms: ${roomTimetableQuery?.rooms?.size}", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Rooms: ${roomTimetableQuery?.rooms?.size}", Toast.LENGTH_SHORT).show()
 
-                    if (roomTimetableQuery != null) saveRoomTimetableQuery()
+                    if (roomTimetableQuery != null) {
+                        lifecycleScope.launch {
+                            saveRoomTimetableQuery(roomTimetableQuery)
+                        }
+                    }
                 }
-
             }
     }
 
-    private fun saveRoomTimetableQuery(roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) {
-        val currentData = roomTimetableQueryListStore.data.first();
+    private suspend fun saveRoomTimetableQuery(roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) {
+        var currentData = roomTimetableQueryListStore.data.first()
         val roomTimetableQueryProto = RoomTimetableQuery.newBuilder()
             .setCampus(roomTimetableQuery.campus)
             .setBuilding(roomTimetableQuery.building)
@@ -59,6 +64,10 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         roomTimetableQueryListStore.updateData { updatedData }
+
+        currentData = roomTimetableQueryListStore.data.first()
+        Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryListCount}", Toast.LENGTH_SHORT).show()
+
     }
 
 }
