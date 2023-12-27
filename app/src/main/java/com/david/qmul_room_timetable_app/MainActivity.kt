@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        showRoomTimetableQueries()
     }
 
     fun addRoomTimetableQuery(view: View) {
@@ -67,6 +71,41 @@ class MainActivity : AppCompatActivity() {
 
         currentData = roomTimetableQueryListStore.data.first()
         Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryListCount}", Toast.LENGTH_SHORT).show()
+        showRoomTimetableQueries()  // Call will add the next query to the query table
+    }
+
+    private fun showRoomTimetableQueries() {
+        lifecycleScope.launch {
+
+            val currentData = roomTimetableQueryListStore.data.first()
+            val linearLayout = findViewById<LinearLayout>(R.id.linearLayout)
+
+            linearLayout.removeAllViews()
+
+            println(currentData.roomTimetableQueryListList.get(0))
+
+            for (roomTimetableQuery in currentData.roomTimetableQueryListList) {
+                val queryView = layoutInflater.inflate(R.layout.room_timetable_query_entry, linearLayout, false)
+
+                val campusTextView = queryView.findViewById<TextView>(R.id.campusTextView)
+                val buildingTextView = queryView.findViewById<TextView>(R.id.buildingTextView)
+                val editButton = queryView.findViewById<ImageButton>(R.id.editButton)
+                val deleteButton = queryView.findViewById<ImageButton>(R.id.deleteButton)
+
+                campusTextView.text = roomTimetableQuery.campus
+                buildingTextView.text = roomTimetableQuery.building
+
+                editButton.setOnClickListener {
+
+                }
+
+                deleteButton.setOnClickListener {
+
+                }
+
+                linearLayout.addView(queryView)
+            }
+        }
 
     }
 
