@@ -3,6 +3,7 @@ package com.david.qmul_room_timetable_app
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -17,6 +18,7 @@ import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -74,7 +76,10 @@ class MainActivity : AppCompatActivity() {
         showRoomTimetableQueries()  // Call will add the next query to the query table
     }
 
+    private val r = Random(0)
+
     private fun showRoomTimetableQueries() {
+
         lifecycleScope.launch {
 
             val currentData = roomTimetableQueryListStore.data.first()
@@ -82,9 +87,7 @@ class MainActivity : AppCompatActivity() {
 
             linearLayout.removeAllViews()
 
-            println(currentData.roomTimetableQueryListList.get(0))
-
-            for (roomTimetableQuery in currentData.roomTimetableQueryListList) {
+            for ((index, roomTimetableQuery) in currentData.roomTimetableQueryListList.withIndex()) {
                 val queryView = layoutInflater.inflate(R.layout.room_timetable_query_entry, linearLayout, false)
 
                 val campusTextView = queryView.findViewById<TextView>(R.id.campusTextView)
@@ -100,13 +103,29 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 deleteButton.setOnClickListener {
-
+                    deleteRoomTimetableQuery(index)
                 }
+
+                if (index % 2 == 0) queryView.setBackgroundColor(Color.LTGRAY)
 
                 linearLayout.addView(queryView)
             }
         }
 
+    }
+
+    private fun deleteRoomTimetableQuery(index: Int) {
+        lifecycleScope.launch {
+            val currentData = roomTimetableQueryListStore.data.first()
+
+            roomTimetableQueryListStore.updateData {
+                currentData.toBuilder()
+                    .removeRoomTimetableQueryList(index)
+                    .build()
+            }
+
+            showRoomTimetableQueries()
+        }
     }
 
 }
