@@ -66,13 +66,13 @@ class MainActivity : AppCompatActivity() {
             .addAllRooms(roomTimetableQuery.rooms.map { it })
 
         val updatedData = currentData.toBuilder()
-            .addRoomTimetableQueryList(roomTimetableQueryProto)
+            .addRoomTimetableQuery(roomTimetableQueryProto)
             .build()
 
         roomTimetableQueryListStore.updateData { updatedData }
 
         currentData = roomTimetableQueryListStore.data.first()
-        Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryListCount}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryCount}", Toast.LENGTH_SHORT).show()
         showRoomTimetableQueries()  // Call will add the next query to the query table
     }
 
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
             linearLayout.removeAllViews()
 
-            for ((index, roomTimetableQuery) in currentData.roomTimetableQueryListList.withIndex()) {
+            for ((index, roomTimetableQuery) in currentData.roomTimetableQueryList.withIndex()) {
                 val queryView = layoutInflater.inflate(R.layout.room_timetable_query_entry, linearLayout, false)
 
                 val campusTextView = queryView.findViewById<TextView>(R.id.campusTextView)
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
             roomTimetableQueryListStore.updateData {
                 currentData.toBuilder()
-                    .removeRoomTimetableQueryList(index)
+                    .removeRoomTimetableQuery(index)
                     .build()
             }
 
