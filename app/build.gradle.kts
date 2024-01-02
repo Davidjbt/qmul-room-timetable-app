@@ -38,8 +38,8 @@ android {
 
 dependencies {
 
+    implementation("net.sourceforge.htmlunit:htmlunit-android:2.67.0")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.appium:java-client:9.0.0")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -67,3 +67,5 @@ protobuf {
         }
     }
 }
+//
+android { packagingOptions { resources.excludes.add("META-INF/**") } }

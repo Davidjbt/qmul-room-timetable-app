@@ -1,56 +1,67 @@
 package com.david.qmul_room_timetable_app.service
 
 import com.david.qmul_room_timetable_app.AddRoomTimetable
-import io.appium.java_client.AppiumDriver
-import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.options.UiAutomator2Options
+import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.WebClient
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor
+import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.html.HtmlSelect
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput
 import kotlinx.coroutines.Runnable
-import java.net.URL
+import java.time.LocalDate
+import java.util.Locale
 
 class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) : Runnable {
 
     lateinit var roomTimetable: String
 
     override fun run() {
-        val options = UiAutomator2Options()
-            .setAppPackage("com.android.chrome")
-            .setAppActivity("com.google.android.apps.chrome.Main")
+        val webClient = WebClient(BrowserVersion.CHROME)
 
-        val driver: AppiumDriver = AndroidDriver(URL("https://timetables.qmul.ac.uk/default.aspx"), options)
+        webClient.options.isCssEnabled = false
+        webClient.options.isJavaScriptEnabled = true
 
-//        driver["https://timetables.qmul.ac.uk/default.aspx"]
-//        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
-//
-//        val locationsBtn = driver.findElement(By.id("LinkBtn_locations"))
-//        locationsBtn.click()
-//
-//        var dropdown = Select(driver.findElement(By.id("dlFilter2")))
-//        dropdown.selectByVisibleText("Mile End Campus")
-//
-//        dropdown = Select(wait.until(EC.visibilityOfElementLocated(By.id("dlFilter"))))
-//        dropdown.selectByVisibleText(roomTimetableQuery.building)
-//
-//        dropdown = Select(wait.until(EC.visibilityOfElementLocated(By.id("dlObject"))))
-//
-//        for (room in roomTimetableQuery.rooms) dropdown.selectByVisibleText(room)
-//
-//        dropdown = Select(wait.until(EC.visibilityOfElementLocated(By.id("lbWeeks"))))
-//        dropdown.deselectByVisibleText("All Weeks")
-//        dropdown.selectByVisibleText("This Week")
-//
-//        var day = LocalDate.now().dayOfWeek.toString()
-//        day = day[0].toString() + day.substring(1).lowercase(Locale.getDefault())
-//        dropdown = Select(wait.until(EC.visibilityOfElementLocated(By.id("lbDays"))))
-//        dropdown.selectByVisibleText(day)
-//
-//        val viewTimetableBtn = driver.findElement(By.id("bGetTimetable"))
-//        viewTimetableBtn.click()
-//
-//        roomTimetable = driver.pageSource
-//            .replace("\n".toRegex(), "")
-//            .replace("\"".toRegex(), "'")
-//
-//        driver.close()
+        val url = "https://timetables.qmul.ac.uk/default.aspx"
+        var page: HtmlPage = webClient.getPage(url)
+
+        val locationsBtn: HtmlAnchor = page.getHtmlElementById("LinkBtn_locations")
+        page = locationsBtn.click()
+
+        val campusDropdown: HtmlSelect = page.getElementByName("dlFilter2")
+
+        campusDropdown.getOptionByText(roomTimetableQuery.campus).setSelected(true)
+        webClient.waitForBackgroundJavaScript(3000)
+        page = webClient.currentWindow.enclosedPage as HtmlPage
+
+        val buildingDropdown: HtmlSelect = page.getElementByName("dlFilter")
+        buildingDropdown.getOptionByText(roomTimetableQuery.building).setSelected(true)
+        webClient.waitForBackgroundJavaScript(3000)
+        page = webClient.currentWindow.enclosedPage as HtmlPage
+
+
+        val roomsDropdown: HtmlSelect = page.getElementByName("dlObject")
+        for (room in roomTimetableQuery.rooms) {
+            roomsDropdown.getOptionByText(room).setSelected(true)
+        }
+
+        val weeksDropdown: HtmlSelect = page.getElementByName("lbWeeks")
+        weeksDropdown.getOptionByText("All Weeks").setSelected(false)
+        weeksDropdown.getOptionByText("This Week").setSelected(true)
+
+        val day = LocalDate.now().dayOfWeek.toString()
+        val formattedDay = day[0].toString() + day.substring(1).lowercase(Locale.getDefault())
+        val daysDropdown: HtmlSelect = page.getElementByName("lbDays")
+
+        daysDropdown.getOptionByText("All Weekdays").setSelected(false)
+        daysDropdown.getOptionByText(formattedDay).setSelected(true)
+
+        val viewTimetableBtn: HtmlSubmitInput = page.getHtmlElementById("bGetTimetable")
+        viewTimetableBtn.click<HtmlPage>()
+
+        webClient.waitForBackgroundJavaScript(3000)
+        page = webClient.currentWindow.enclosedPage as HtmlPage
+
+        roomTimetable = page.asXml()
     }
 
 }

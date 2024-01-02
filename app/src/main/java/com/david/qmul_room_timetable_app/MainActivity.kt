@@ -17,13 +17,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import com.david.qmul_room_timetable_app.service.RoomTimetableService
-import io.appium.java_client.AppiumDriver
-import io.appium.java_client.android.AndroidDriver
-import io.appium.java_client.android.options.UiAutomator2Options
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
-import java.net.URL
 import kotlin.random.Random
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
@@ -151,16 +147,16 @@ class MainActivity : AppCompatActivity() {
 
             val fileName = "result.json"
             val file = File(fileName)
-
-            results.forEach { file.writeText(it) }
-
-            println("Done")
+//
+//            results.forEach { file.writeText(it) }
+//
+//            println("Done")
         }
-        val options = UiAutomator2Options()
-            .setAppPackage("com.android.chrome")
-            .setAppActivity("com.google.android.apps.chrome.Main")
-
-        val driver: AppiumDriver = AndroidDriver(URL("https://timetables.qmul.ac.uk/default.aspx"), options)
+//        val options = UiAutomator2Options()
+//            .setAppPackage("com.android.chrome")
+//            .setAppActivity("com.google.android.apps.chrome.Main")
+//
+//        val driver: AppiumDriver = AndroidDriver(URL("https://timetables.qmul.ac.uk/default.aspx"), options)
     }
 
 }
