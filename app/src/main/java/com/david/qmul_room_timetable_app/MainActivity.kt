@@ -19,8 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import com.david.qmul_room_timetable_app.service.RoomTimetableService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.io.File
-import kotlin.random.Random
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -77,8 +75,6 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryCount}", Toast.LENGTH_SHORT).show()
         showRoomTimetableQueries()  // Call will add the next query to the query table
     }
-
-    private val r = Random(0)
 
     private fun showRoomTimetableQueries() {
 
@@ -145,18 +141,29 @@ class MainActivity : AppCompatActivity() {
                 }.toTypedArray()
             )
 
-            val fileName = "result.json"
-            val file = File(fileName)
+//            val fileName = "result.html"
+//            val fileNameCss = "result.css"
+//            val folderName = "myFolder"
+//            val folder = File(filesDir, folderName)
 //
-//            results.forEach { file.writeText(it) }
+//            if (!folder.exists()) {
+//                folder.mkdir()
+//            }
+//
+//            val file = File(folder, fileName)
+//            val fileCss = File(folder, fileNameCss)
+//
+//            results.forEach {
+//                file.writeText(it)
+//            }
+//
+//            results.forEach {
+//                fileCss.writeText(it)
+//            }
 //
 //            println("Done")
         }
-//        val options = UiAutomator2Options()
-//            .setAppPackage("com.android.chrome")
-//            .setAppActivity("com.google.android.apps.chrome.Main")
-//
-//        val driver: AppiumDriver = AndroidDriver(URL("https://timetables.qmul.ac.uk/default.aspx"), options)
+
     }
 
 }

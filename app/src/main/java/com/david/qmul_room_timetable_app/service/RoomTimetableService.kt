@@ -16,6 +16,6 @@ class RoomTimetableService {
         executorService.shutdown()
         executorService.awaitTermination(30, TimeUnit.SECONDS)
 
-        return tasks.map { task -> task.roomTimetable }.toTypedArray()
+        return tasks.map { task -> task.roomTimetableHtml }.toTypedArray()
     }
 }

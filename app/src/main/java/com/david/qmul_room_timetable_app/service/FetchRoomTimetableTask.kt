@@ -2,8 +2,10 @@ package com.david.qmul_room_timetable_app.service
 
 import com.david.qmul_room_timetable_app.AddRoomTimetable
 import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.TextPage
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor
+import com.gargoylesoftware.htmlunit.html.HtmlLink
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.html.HtmlSelect
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput
@@ -13,7 +15,8 @@ import java.util.Locale
 
 class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) : Runnable {
 
-    lateinit var roomTimetable: String
+    lateinit var roomTimetableHtml: String
+    lateinit var roomTimetableCss: String
 
     override fun run() {
         val webClient = WebClient(BrowserVersion.CHROME)
@@ -59,9 +62,16 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.Ro
         viewTimetableBtn.click<HtmlPage>()
 
         webClient.waitForBackgroundJavaScript(3000)
+
         page = webClient.currentWindow.enclosedPage as HtmlPage
 
-        roomTimetable = page.asXml()
+        roomTimetableHtml = page.webResponse.contentAsString
+
+        val linkElements = page.getByXPath<HtmlLink>("//link[@rel='stylesheet']")
+
+        for (link in linkElements) {
+            roomTimetableCss = webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${link.hrefAttribute}").webResponse.contentAsString
+        }
     }
 
 }
