@@ -5,7 +5,6 @@ import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.TextPage
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor
-import com.gargoylesoftware.htmlunit.html.HtmlLink
 import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.html.HtmlSelect
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput
@@ -13,10 +12,12 @@ import kotlinx.coroutines.Runnable
 import java.time.LocalDate
 import java.util.Locale
 
+private var stylesSheetsFetched = false
+
 class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) : Runnable {
 
     lateinit var roomTimetableHtml: String
-    lateinit var roomTimetableCss: String
+    var roomTimetableCss: HashMap<String, String>? = null
 
     override fun run() {
         val webClient = WebClient(BrowserVersion.CHROME)
@@ -67,10 +68,23 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.Ro
 
         roomTimetableHtml = page.webResponse.contentAsString
 
-        val linkElements = page.getByXPath<HtmlLink>("//link[@rel='stylesheet']")
+        synchronized(this) {
+            if (!stylesSheetsFetched) {
+                val stylesSheets = arrayOf("swscustom.css", "activitytype.css")
+//                for (stylesSheet in stylesSheets) {
+//                    roomTimetableCss.add(webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${stylesSheet}").webResponse.contentAsString)
+//                }
 
-        for (link in linkElements) {
-            roomTimetableCss = webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${link.hrefAttribute}").webResponse.contentAsString
+                roomTimetableCss = HashMap<String, String>()
+
+                stylesSheets.forEach {
+                    val css = webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${it}")
+
+                    roomTimetableCss?.put(it, css.webResponse.contentAsString)
+                }
+
+                stylesSheetsFetched = true
+            }
         }
     }
 

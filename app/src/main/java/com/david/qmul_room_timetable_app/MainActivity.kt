@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.david.qmul_room_timetable_app.service.RoomTimetableService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -132,8 +133,8 @@ class MainActivity : AppCompatActivity() {
             val currentData = roomTimetableQueryListStore.data.first()
 
             val results = roomTimetableService.getRoomTimetable(
-                currentData.roomTimetableQueryList.map {
-                    query -> AddRoomTimetable.RoomTimetableQuery(
+                currentData.roomTimetableQueryList.map { query ->
+                    AddRoomTimetable.RoomTimetableQuery(
                         query.campus,
                         query.building,
                         query.roomsList.toTypedArray()
@@ -141,29 +142,37 @@ class MainActivity : AppCompatActivity() {
                 }.toTypedArray()
             )
 
-//            val fileName = "result.html"
-//            val fileNameCss = "result.css"
-//            val folderName = "myFolder"
-//            val folder = File(filesDir, folderName)
-//
-//            if (!folder.exists()) {
-//                folder.mkdir()
-//            }
-//
-//            val file = File(folder, fileName)
-//            val fileCss = File(folder, fileNameCss)
-//
-//            results.forEach {
-//                file.writeText(it)
-//            }
-//
-//            results.forEach {
-//                fileCss.writeText(it)
-//            }
-//
-//            println("Done")
+            val folderName = "results"
+            val folder = File(filesDir, folderName)
+
+            deleteSavedResults(folder)
+
+            if (!folder.exists()) folder.mkdir()
+
+            for ((i, result) in results.withIndex()) {
+                val file = File(folder, "query_${i}.html")
+                file.writeText(result.resultHtml)
+            }
+
+            val styleSheets = results.filter { it.resultStyling != null}[0].resultStyling
+
+            if (styleSheets != null) {
+                for ((name, sheet) in styleSheets.entries) {
+                    val file = File(folder, name)
+                    file.writeText(sheet)
+                }
+            }
+
         }
 
+        val intent = Intent(this, ShowResultsActivity::class.java)
+        startForResult.launch(intent)
+    }
+
+    private fun deleteSavedResults(resultsFolder: File) {
+        resultsFolder.listFiles()
+            ?.filter { it.extension.endsWith("html") }
+            ?.forEach { it.delete() ; println("deleting")}
     }
 
 }

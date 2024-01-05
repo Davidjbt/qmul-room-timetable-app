@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 
 class RoomTimetableService {
 
-    fun getRoomTimetable(roomTimetableQueries: Array<RoomTimetableQuery>): Array<String> {
+    fun getRoomTimetable(roomTimetableQueries: Array<RoomTimetableQuery>): Array<QueryResult> {
         val nThreads = Runtime.getRuntime().availableProcessors()
         val executorService = Executors.newFixedThreadPool(nThreads)
 
@@ -16,6 +16,12 @@ class RoomTimetableService {
         executorService.shutdown()
         executorService.awaitTermination(30, TimeUnit.SECONDS)
 
-        return tasks.map { task -> task.roomTimetableHtml }.toTypedArray()
+        return tasks.map { QueryResult(it.roomTimetableHtml, it.roomTimetableCss)  }.toTypedArray()
     }
+
+    data class QueryResult (
+        val resultHtml: String,
+        val resultStyling: Map<String, String>?
+    )
+
 }
