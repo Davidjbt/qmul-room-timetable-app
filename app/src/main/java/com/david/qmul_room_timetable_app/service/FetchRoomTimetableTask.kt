@@ -71,11 +71,8 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.Ro
         synchronized(this) {
             if (!stylesSheetsFetched) {
                 val stylesSheets = arrayOf("swscustom.css", "activitytype.css")
-//                for (stylesSheet in stylesSheets) {
-//                    roomTimetableCss.add(webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${stylesSheet}").webResponse.contentAsString)
-//                }
 
-                roomTimetableCss = HashMap<String, String>()
+                roomTimetableCss = HashMap()
 
                 stylesSheets.forEach {
                     val css = webClient.getPage<TextPage>("https://timetables.qmul.ac.uk/${it}")

@@ -26,8 +26,13 @@ class ShowResultsActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prevButton)
         nextButton = findViewById(R.id.nextButton)
 
+        webView.settings.allowContentAccess = true;
+        webView.settings.allowFileAccess = true;
+
         loadResults()
         showResult()
+
+//        WebView.setWebContentsDebuggingEnabled(true)
     }
 
     private fun loadResults() {
@@ -39,8 +44,9 @@ class ShowResultsActivity : AppCompatActivity() {
 
     private fun showResult() {
         val result = results[currentIndex]
-        webView.settings.javaScriptEnabled = true
-        webView.loadDataWithBaseURL(null, result, "text/html", "UTF=8", null)
+        val basePath = "file://${filesDir.absolutePath}/$RESULT_FOLDER_NAME/"
+
+        webView.loadDataWithBaseURL(basePath, result, "text/html", "UTF=8", null)
     }
 
     fun showPreviousResult(view: View) {

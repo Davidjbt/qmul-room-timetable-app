@@ -175,4 +175,9 @@ class MainActivity : AppCompatActivity() {
             ?.forEach { it.delete() ; println("deleting")}
     }
 
+    fun showResults(view: View) {
+        val intent = Intent(this, ShowResultsActivity::class.java)
+        startForResult.launch(intent)
+    }
+
 }
