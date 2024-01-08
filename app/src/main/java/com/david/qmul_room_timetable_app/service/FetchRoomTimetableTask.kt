@@ -12,12 +12,11 @@ import kotlinx.coroutines.Runnable
 import java.time.LocalDate
 import java.util.Locale
 
-private var stylesSheetsFetched = false
-
 class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) : Runnable {
 
     lateinit var roomTimetableHtml: String
     var roomTimetableCss: HashMap<String, String>? = null
+    private var stylesSheetsFetched = false
 
     override fun run() {
         val webClient = WebClient(BrowserVersion.CHROME)

@@ -26,8 +26,15 @@ class ShowResultsActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prevButton)
         nextButton = findViewById(R.id.nextButton)
 
-        webView.settings.allowContentAccess = true;
-        webView.settings.allowFileAccess = true;
+        webView.settings.apply {
+            allowContentAccess = true
+            allowFileAccess = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            setSupportZoom(true)
+            builtInZoomControls = true
+            displayZoomControls = false
+        }
 
         loadResults()
         showResult()
