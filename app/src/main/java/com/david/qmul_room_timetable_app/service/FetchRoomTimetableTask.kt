@@ -22,7 +22,6 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.Ro
         val webClient = WebClient(BrowserVersion.CHROME)
 
         webClient.options.isCssEnabled = false
-        webClient.options.isJavaScriptEnabled = true
 
         val url = "https://timetables.qmul.ac.uk/default.aspx"
         var page: HtmlPage = webClient.getPage(url)

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -20,6 +21,7 @@ import com.david.qmul_room_timetable_app.service.RoomTimetableService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.Serializable
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -46,9 +48,9 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 if (data != null) {
-                    val roomTimetableQuery = data.getSerializableExtra("roomTimetableQuery", AddRoomTimetable.RoomTimetableQuery::class.java)
-
-//                    Toast.makeText(this, "Rooms: ${roomTimetableQuery?.rooms?.size}", Toast.LENGTH_SHORT).show()
+                    val roomTimetableQuery = getSerializableExtra(data,
+                        "roomTimetableQuery",
+                        AddRoomTimetable.RoomTimetableQuery::class.java)
 
                     if (roomTimetableQuery != null) {
                         lifecycleScope.launch {
@@ -57,6 +59,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    @Suppress("DEPRECATION", "ObsoleteSdkInt")
+    private fun <T: Serializable?> getSerializableExtra(intent: Intent, key: String, className: Class<T>): T {
+        return if (Build.VERSION.SDK_INT >= 33)
+            intent.getSerializableExtra(key, className)!!
+        else
+            intent.getSerializableExtra(key) as T
     }
 
     private suspend fun saveRoomTimetableQuery(roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) {
