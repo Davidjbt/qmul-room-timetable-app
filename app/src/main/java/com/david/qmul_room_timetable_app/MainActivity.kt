@@ -19,6 +19,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import com.david.qmul_room_timetable_app.service.RoomTimetableService
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
@@ -110,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                 buildingTextView.text = roomTimetableQuery.building
 
                 editButton.setOnClickListener {
-
+                    updateRoomTimetableQuery(index)
                 }
 
                 deleteButton.setOnClickListener {
@@ -123,6 +125,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun updateRoomTimetableQuery(index: Int) {
+        val intent = Intent(this, AddRoomTimetable::class.java)
+        var data: RoomTimetableQuery? = null
+
+        lifecycleScope.launch {
+            data = roomTimetableQueryListStore.data.first().getRoomTimetableQuery(index)
+            val roomTimetableQueryType = object: TypeToken<List<AddRoomTimetable.RoomTimetableQuery>>() {}.type
+            intent.putExtra("roomTimetableQuery", Gson().toJson(data, roomTimetableQueryType))
+
+            startForResult.launch(intent)
+        }
     }
 
     private fun deleteRoomTimetableQuery(index: Int) {

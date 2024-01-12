@@ -58,6 +58,33 @@ class AddRoomTimetable : AppCompatActivity() {
             Toast.makeText(this, "Item: ${selectedBuilding.building}", Toast.LENGTH_SHORT).show()
             updateRoomDropdown()
         }
+
+        if (intent.hasExtra("roomTimetableQuery")) {
+           val roomTimetableQuery = intent.getSerializableExtra("roomTimetableQuery") as RoomTimetableQuery
+
+            autoCompleteTextViewCampus.setText(roomTimetableQuery.campus, false)
+            autoCompleteTextViewBuilding.setText(roomTimetableQuery.building, false)
+
+            updateBuildingDropdown(selectedCampus.buildings.map { it.building })
+            updateRoomDropdown()
+
+            roomTimetableQuery.rooms.forEach { room ->
+                val index = roomsArray.indexOf(room)
+                if (index != -1) {
+                    selectedRoomsBoolean[index] = true
+                    roomsList.add(index)
+                }
+            }
+
+            val stringBuilder = StringBuilder()
+            roomsList.forEachIndexed { index, roomIndex ->
+                stringBuilder.append(roomsArray[roomIndex])
+                if (index != roomsList.size - 1) {
+                    stringBuilder.append(", ")
+                }
+            }
+            textViewRooms.text = stringBuilder.toString()
+        }
     }
 
     private fun getCampusNames(): List<String> {
