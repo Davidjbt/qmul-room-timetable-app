@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.david.qmul_room_timetable_app.model.Building
 import com.david.qmul_room_timetable_app.model.Campus
+import com.david.qmul_room_timetable_app.util.GetSerializableExtra.Companion.getSerializableExtra
 import com.david.qmul_room_timetable_app.util.JsonParser
-import java.io.Serializable
 
 class AddRoomTimetable : AppCompatActivity() {
 
@@ -60,7 +60,8 @@ class AddRoomTimetable : AppCompatActivity() {
         }
 
         if (intent.hasExtra("roomTimetableQuery")) {
-           val roomTimetableQuery = intent.getSerializableExtra("roomTimetableQuery") as RoomTimetableQuery
+            val intentData = getSerializableExtra(intent, "roomTimetableQuery", ByteArray::class.java)
+            val roomTimetableQuery = RoomTimetableQuery.parseFrom(intentData)
 
             autoCompleteTextViewCampus.setText(roomTimetableQuery.campus, false)
             autoCompleteTextViewBuilding.setText(roomTimetableQuery.building, false)
@@ -68,7 +69,7 @@ class AddRoomTimetable : AppCompatActivity() {
             updateBuildingDropdown(selectedCampus.buildings.map { it.building })
             updateRoomDropdown()
 
-            roomTimetableQuery.rooms.forEach { room ->
+            roomTimetableQuery.roomsList.forEach { room ->
                 val index = roomsArray.indexOf(room)
                 if (index != -1) {
                     selectedRoomsBoolean[index] = true
@@ -155,21 +156,15 @@ class AddRoomTimetable : AppCompatActivity() {
 
     fun addRoomTimetableQuery(view: View) {
         val intent = Intent()
-        val roomTimetableQuery = RoomTimetableQuery(
-            selectedCampus.campus,
-            selectedBuilding.building,
-            selectedRooms.toTypedArray()
-        )
+        val roomTimetableQuery = RoomTimetableQuery.newBuilder()
+            .setCampus(selectedCampus.campus)
+            .setBuilding(selectedBuilding.building)
+            .addAllRooms(selectedRooms)
+            .build()
 
-        intent.putExtra("roomTimetableQuery", roomTimetableQuery)
+        intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-
-    data class RoomTimetableQuery (
-        val campus: String,
-        val building: String,
-        val rooms: Array<String>
-    ) : Serializable
 
 }

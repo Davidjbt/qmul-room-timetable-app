@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -19,12 +18,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import com.david.qmul_room_timetable_app.service.RoomTimetableService
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.david.qmul_room_timetable_app.util.GetSerializableExtra.Companion.getSerializableExtra
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.Serializable
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -52,12 +49,12 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 if (data != null) {
-                    val roomTimetableQuery = getSerializableExtra(data,
-                        "roomTimetableQuery",
-                        AddRoomTimetable.RoomTimetableQuery::class.java)
+                    val roomTimetableQuery = RoomTimetableQuery.parseFrom(
+                        getSerializableExtra(data, "roomTimetableQuery", ByteArray::class.java)
+                    )
 
                     if (roomTimetableQuery != null) {
-                        lifecycleScope.launch {
+                          lifecycleScope.launch {
                             saveRoomTimetableQuery(roomTimetableQuery)
                         }
                     }
@@ -65,23 +62,10 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    @Suppress("DEPRECATION", "ObsoleteSdkInt")
-    private fun <T: Serializable?> getSerializableExtra(intent: Intent, key: String, className: Class<T>): T {
-        return if (Build.VERSION.SDK_INT >= 33)
-            intent.getSerializableExtra(key, className)!!
-        else
-            intent.getSerializableExtra(key) as T
-    }
-
-    private suspend fun saveRoomTimetableQuery(roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) {
+    private suspend fun saveRoomTimetableQuery(roomTimetableQuery: RoomTimetableQuery) {
         var currentData = roomTimetableQueryListStore.data.first()
-        val roomTimetableQueryProto = RoomTimetableQuery.newBuilder()
-            .setCampus(roomTimetableQuery.campus)
-            .setBuilding(roomTimetableQuery.building)
-            .addAllRooms(roomTimetableQuery.rooms.map { it })
-
         val updatedData = currentData.toBuilder()
-            .addRoomTimetableQuery(roomTimetableQueryProto)
+            .addRoomTimetableQuery(roomTimetableQuery)
             .build()
 
         roomTimetableQueryListStore.updateData { updatedData }
@@ -129,12 +113,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateRoomTimetableQuery(index: Int) {
         val intent = Intent(this, AddRoomTimetable::class.java)
-        var data: RoomTimetableQuery? = null
 
         lifecycleScope.launch {
-            data = roomTimetableQueryListStore.data.first().getRoomTimetableQuery(index)
-            val roomTimetableQueryType = object: TypeToken<List<AddRoomTimetable.RoomTimetableQuery>>() {}.type
-            intent.putExtra("roomTimetableQuery", Gson().toJson(data, roomTimetableQueryType))
+            val roomTimetableQuery = roomTimetableQueryListStore.data.first().getRoomTimetableQuery(index)
+
+            intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())
 
             startForResult.launch(intent)
         }
@@ -159,15 +142,7 @@ class MainActivity : AppCompatActivity() {
             val roomTimetableService = RoomTimetableService()
             val currentData = roomTimetableQueryListStore.data.first()
 
-            val results = roomTimetableService.getRoomTimetable(
-                currentData.roomTimetableQueryList.map { query ->
-                    AddRoomTimetable.RoomTimetableQuery(
-                        query.campus,
-                        query.building,
-                        query.roomsList.toTypedArray()
-                    )
-                }.toTypedArray()
-            )
+            val results = roomTimetableService.getRoomTimetable(currentData.roomTimetableQueryList.toTypedArray())
 
             val folderName = "results"
             val folder = File(filesDir, folderName)

@@ -9,7 +9,7 @@ import java.io.InputStreamReader
 
 class JsonParser(private val context: Context) {
 
-    public fun parseJsonData(): List<Campus> {
+    fun parseJsonData(): List<Campus> {
         val inputStream = context.assets.open("qmul_rooms.json")
         val reader = InputStreamReader(inputStream)
 

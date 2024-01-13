@@ -1,6 +1,6 @@
 package com.david.qmul_room_timetable_app.service
 
-import com.david.qmul_room_timetable_app.AddRoomTimetable.RoomTimetableQuery
+import com.david.qmul_room_timetable_app.RoomTimetableQuery
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 

@@ -1,6 +1,6 @@
 package com.david.qmul_room_timetable_app.service
 
-import com.david.qmul_room_timetable_app.AddRoomTimetable
+import com.david.qmul_room_timetable_app.RoomTimetableQuery
 import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.TextPage
 import com.gargoylesoftware.htmlunit.WebClient
@@ -12,7 +12,7 @@ import kotlinx.coroutines.Runnable
 import java.time.LocalDate
 import java.util.Locale
 
-class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.RoomTimetableQuery) : Runnable {
+class FetchRoomTimetableTask(private val roomTimetableQuery: RoomTimetableQuery) : Runnable {
 
     lateinit var roomTimetableHtml: String
     var roomTimetableCss: HashMap<String, String>? = null
@@ -42,7 +42,7 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: AddRoomTimetable.Ro
 
 
         val roomsDropdown: HtmlSelect = page.getElementByName("dlObject")
-        for (room in roomTimetableQuery.rooms) {
+        for (room in roomTimetableQuery.roomsList) {
             roomsDropdown.getOptionByText(room).setSelected(true)
         }
 
