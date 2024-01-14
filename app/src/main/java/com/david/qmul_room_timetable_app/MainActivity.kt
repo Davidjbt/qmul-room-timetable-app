@@ -55,7 +55,13 @@ class MainActivity : AppCompatActivity() {
 
                     if (roomTimetableQuery != null) {
                           lifecycleScope.launch {
-                            saveRoomTimetableQuery(roomTimetableQuery)
+                              val index = data.getIntExtra("index", -1)
+
+                              if (index == -1) {
+                                  saveRoomTimetableQuery(roomTimetableQuery)
+                              } else {
+                                  //
+                              }
                         }
                     }
                 }
@@ -118,6 +124,7 @@ class MainActivity : AppCompatActivity() {
             val roomTimetableQuery = roomTimetableQueryListStore.data.first().getRoomTimetableQuery(index)
 
             intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())
+            intent.putExtra("index", index)
 
             startForResult.launch(intent)
         }

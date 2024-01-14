@@ -50,6 +50,7 @@ class AddRoomTimetable : AppCompatActivity() {
         autoCompleteTextViewCampus.setOnItemClickListener { _, _, position, _ ->
             selectedCampus = campusList[position]
             Toast.makeText(this, "Item: ${selectedCampus.campus}", Toast.LENGTH_SHORT).show()
+//            autoCompleteTextViewBuilding.setText("Select Building")
             updateBuildingDropdown(selectedCampus.buildings.map { it.building })
         }
 
@@ -60,32 +61,38 @@ class AddRoomTimetable : AppCompatActivity() {
         }
 
         if (intent.hasExtra("roomTimetableQuery")) {
-            val intentData = getSerializableExtra(intent, "roomTimetableQuery", ByteArray::class.java)
-            val roomTimetableQuery = RoomTimetableQuery.parseFrom(intentData)
-
-            autoCompleteTextViewCampus.setText(roomTimetableQuery.campus, false)
-            autoCompleteTextViewBuilding.setText(roomTimetableQuery.building, false)
-
-            updateBuildingDropdown(selectedCampus.buildings.map { it.building })
-            updateRoomDropdown()
-
-            roomTimetableQuery.roomsList.forEach { room ->
-                val index = roomsArray.indexOf(room)
-                if (index != -1) {
-                    selectedRoomsBoolean[index] = true
-                    roomsList.add(index)
-                }
-            }
-
-            val stringBuilder = StringBuilder()
-            roomsList.forEachIndexed { index, roomIndex ->
-                stringBuilder.append(roomsArray[roomIndex])
-                if (index != roomsList.size - 1) {
-                    stringBuilder.append(", ")
-                }
-            }
-            textViewRooms.text = stringBuilder.toString()
+            initialiseForm(intent)
         }
+    }
+
+    private fun initialiseForm(intent: Intent) {
+        val intentData = getSerializableExtra(intent, "roomTimetableQuery", ByteArray::class.java)
+        val roomTimetableQuery = RoomTimetableQuery.parseFrom(intentData)
+
+        autoCompleteTextViewCampus.setText(roomTimetableQuery.campus, false)
+        autoCompleteTextViewBuilding.setText(roomTimetableQuery.building, false)
+
+        selectedCampus = campusList.find { it.campus == roomTimetableQuery.campus }!!
+        selectedBuilding = selectedCampus.buildings.find { it.building == roomTimetableQuery.building }!!
+
+        updateBuildingDropdown(selectedCampus.buildings.map { it.building })
+        updateRoomDropdown()
+
+        val stringBuilder = StringBuilder()
+        roomTimetableQuery.roomsList.forEach { room ->
+            val index = roomsArray.indexOf(room)
+
+            if (index != -1) {
+                selectedRoomsBoolean[index] = true
+                roomsList.add(index)
+                selectedRooms.add(room)
+                stringBuilder.append(room)
+                if (index != roomsList.size - 1)
+                    stringBuilder.append(", ")
+            }
+        }
+
+        textViewRooms.text = stringBuilder.toString()
     }
 
     private fun getCampusNames(): List<String> {
@@ -155,7 +162,7 @@ class AddRoomTimetable : AppCompatActivity() {
     }
 
     fun addRoomTimetableQuery(view: View) {
-        val intent = Intent()
+//        val intent = Intent()
         val roomTimetableQuery = RoomTimetableQuery.newBuilder()
             .setCampus(selectedCampus.campus)
             .setBuilding(selectedBuilding.building)
@@ -163,7 +170,7 @@ class AddRoomTimetable : AppCompatActivity() {
             .build()
 
         intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())
-        setResult(Activity.RESULT_OK, intent)
+        setResult(Activity.RESULT_OK, intent.putExtra("index", intent.getIntExtra("index", -1)))
         finish()
     }
 
