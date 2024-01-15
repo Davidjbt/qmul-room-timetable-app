@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                               if (index == -1) {
                                   saveRoomTimetableQuery(roomTimetableQuery)
                               } else {
-                                  //
+                                  updateRoomTimetableQuery(roomTimetableQuery, index)
                               }
                         }
                     }
@@ -79,6 +79,16 @@ class MainActivity : AppCompatActivity() {
         currentData = roomTimetableQueryListStore.data.first()
         Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryCount}", Toast.LENGTH_SHORT).show()
         showRoomTimetableQueries()  // Call will add the next query to the query table
+    }
+
+    private suspend fun updateRoomTimetableQuery(roomTimetableQuery: RoomTimetableQuery, index: Int) {
+        val currentData = roomTimetableQueryListStore.data.first()
+        val updateData =  currentData.toBuilder()
+            .setRoomTimetableQuery(index, roomTimetableQuery)
+            .build()
+
+        roomTimetableQueryListStore.updateData { updateData }
+        showRoomTimetableQueries()  // Call will update query table
     }
 
     private fun showRoomTimetableQueries() {
@@ -102,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                 buildingTextView.text = roomTimetableQuery.building
 
                 editButton.setOnClickListener {
-                    updateRoomTimetableQuery(index)
+                    onEditButtonClick(index)
                 }
 
                 deleteButton.setOnClickListener {
@@ -117,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun updateRoomTimetableQuery(index: Int) {
+    private fun onEditButtonClick(index: Int) {
         val intent = Intent(this, AddRoomTimetable::class.java)
 
         lifecycleScope.launch {
