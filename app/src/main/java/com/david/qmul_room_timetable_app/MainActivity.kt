@@ -3,7 +3,6 @@ package com.david.qmul_room_timetable_app
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -118,8 +117,6 @@ class MainActivity : AppCompatActivity() {
                 deleteButton.setOnClickListener {
                     deleteRoomTimetableQuery(index)
                 }
-
-                if (index % 2 == 0) queryView.setBackgroundColor(Color.LTGRAY)
 
                 linearLayout.addView(queryView)
             }

@@ -1,35 +1,44 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/rounded_box"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/campusTextView"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:text="Campus" />
 
     <TextView
         android:id="@+id/buildingTextView"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="Building" />
 
     <ImageButton
         android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Edit"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:src="@drawable/ic_edit" />
 
     <ImageButton
         android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
+        android:layout_marginRight="3dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Delete"
         android:scaleX="0.75"
