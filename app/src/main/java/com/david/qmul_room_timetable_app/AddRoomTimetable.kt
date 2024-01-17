@@ -28,7 +28,6 @@ class AddRoomTimetable : AppCompatActivity() {
     private lateinit var selectedBuilding: Building
     private lateinit var selectedRooms: ArrayList<String>
     private lateinit var selectedRoomsBoolean: BooleanArray
-    private lateinit var roomsList: ArrayList<Int>
     private lateinit var roomsArray: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +49,8 @@ class AddRoomTimetable : AppCompatActivity() {
         autoCompleteTextViewCampus.setOnItemClickListener { _, _, position, _ ->
             selectedCampus = campusList[position]
             Toast.makeText(this, "Item: ${selectedCampus.campus}", Toast.LENGTH_SHORT).show()
-//            autoCompleteTextViewBuilding.setText("Select Building")
             updateBuildingDropdown(selectedCampus.buildings.map { it.building })
+            autoCompleteTextViewBuilding.setText("Select Building", false)
         }
 
         autoCompleteTextViewBuilding.setOnItemClickListener { _, _, position, _ ->
@@ -84,10 +83,9 @@ class AddRoomTimetable : AppCompatActivity() {
 
             if (index != -1) {
                 selectedRoomsBoolean[index] = true
-                roomsList.add(index)
                 selectedRooms.add(room)
                 stringBuilder.append(room)
-                if (index != roomsList.size - 1)
+                if (index != selectedRooms.size - 1)
                     stringBuilder.append(", ")
             }
         }
@@ -108,14 +106,13 @@ class AddRoomTimetable : AppCompatActivity() {
 
     private fun updateRoomDropdown() {
         roomsArray = selectedBuilding.rooms.toTypedArray();
-        roomsList = ArrayList()
         selectedRoomsBoolean = BooleanArray(roomsArray.size)
         selectedRooms = ArrayList()
         textViewRooms.text = ""
     }
 
     fun showRoomsDialog(view: View) {
-        var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
 
         builder.setTitle("Select Room(s)")
         builder.setCancelable(false)
@@ -123,9 +120,9 @@ class AddRoomTimetable : AppCompatActivity() {
         builder.setMultiChoiceItems(roomsArray, selectedRoomsBoolean
         ) { dialog: DialogInterface, which: Int, isChecked: Boolean ->
             if (isChecked) {
-                roomsList.add(which)
+                selectedRooms.add(roomsArray[which])
             } else {
-                roomsList.remove(which)
+                selectedRooms.remove(roomsArray[which])
             }
         }
 
@@ -133,11 +130,10 @@ class AddRoomTimetable : AppCompatActivity() {
         ) {dialog, i ->
             val stringBuilder: StringBuilder = StringBuilder()
 
-            for (j in 0 until roomsList.size) {
-                selectedRooms.add(roomsArray[roomsList[j]])
-                stringBuilder.append(roomsArray[roomsList[j]])
+            for (j in 0 until selectedRooms.size) {
+                stringBuilder.append(selectedRooms[j])
 
-                if (j != roomsList.size - 1) {
+                if (j != selectedRooms.size - 1) {
                     stringBuilder.append(", ")
                 }
             }
@@ -153,7 +149,6 @@ class AddRoomTimetable : AppCompatActivity() {
         builder.setNeutralButton("Clear All"
         ) {dialog, i ->
             selectedRoomsBoolean.fill(false)
-            roomsList.clear()
             textViewRooms.text = ""
             selectedRooms.clear();
         }
