@@ -162,7 +162,6 @@ class AddRoomTimetable : AppCompatActivity() {
     }
 
     fun addRoomTimetableQuery(view: View) {
-//        val intent = Intent()
         val roomTimetableQuery = RoomTimetableQuery.newBuilder()
             .setCampus(selectedCampus.campus)
             .setBuilding(selectedBuilding.building)
