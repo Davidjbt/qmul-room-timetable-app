@@ -42,12 +42,14 @@ class AddRoomTimetable : AppCompatActivity() {
         textViewRooms = findViewById(R.id.textView)
         adapterCampus = ArrayAdapter(this, R.layout.dropdown_item, getCampusNames())
         adapterBuilding = ArrayAdapter(this, R.layout.dropdown_item, mutableListOf<String>())
+        selectedRooms = ArrayList()
 
         autoCompleteTextViewCampus.setAdapter(adapterCampus)
         autoCompleteTextViewBuilding.setAdapter(adapterBuilding)
 
         autoCompleteTextViewCampus.setOnItemClickListener { _, _, position, _ ->
             selectedCampus = campusList[position]
+            selectedRooms.clear()
             Toast.makeText(this, "Item: ${selectedCampus.campus}", Toast.LENGTH_SHORT).show()
             updateBuildingDropdown(selectedCampus.buildings.map { it.building })
             autoCompleteTextViewBuilding.setText("Select Building", false)
@@ -107,11 +109,20 @@ class AddRoomTimetable : AppCompatActivity() {
     private fun updateRoomDropdown() {
         roomsArray = selectedBuilding.rooms.toTypedArray();
         selectedRoomsBoolean = BooleanArray(roomsArray.size)
-        selectedRooms = ArrayList()
+        selectedRooms.clear()
         textViewRooms.text = ""
     }
 
     fun showRoomsDialog(view: View) {
+        if (!::selectedCampus.isInitialized || !::selectedBuilding.isInitialized ||  !selectedCampus.buildings.contains(selectedBuilding)) {
+            Toast.makeText(this, "Please select a campus and building first", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        println("${selectedCampus.campus} ${selectedBuilding.building}")
+
+        println("here+")
+
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
 
         builder.setTitle("Select Room(s)")
@@ -157,6 +168,11 @@ class AddRoomTimetable : AppCompatActivity() {
     }
 
     fun addRoomTimetableQuery(view: View) {
+        if (selectedRooms.size == 0) {
+            Toast.makeText(this, "Rooms have not selected", Toast.LENGTH_SHORT).show()
+            return;
+        }
+
         val roomTimetableQuery = RoomTimetableQuery.newBuilder()
             .setCampus(selectedCampus.campus)
             .setBuilding(selectedBuilding.building)
