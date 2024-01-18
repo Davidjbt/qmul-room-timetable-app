@@ -148,14 +148,27 @@ class MainActivity : AppCompatActivity() {
             }
 
             showRoomTimetableQueries()
+            deleteSavedResult(index)
         }
+    }
+
+    private fun deleteSavedResult(index: Int) {
+        val folderName = "results"
+        val folder = File(filesDir, folderName)
+
+        folder.listFiles()?.find { it.name == "query_$index.html" }?.delete()
     }
 
     fun submitRoomTimetableQueries(view: View) {
         lifecycleScope.launch {
-            val roomTimetableService = RoomTimetableService()
             val currentData = roomTimetableQueryListStore.data.first()
 
+            if (currentData.roomTimetableQueryCount == 0) {
+                Toast.makeText(view.context, "Not queries saved", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
+            val roomTimetableService = RoomTimetableService()
             val results = roomTimetableService.getRoomTimetable(currentData.roomTimetableQueryList.toTypedArray())
 
             val folderName = "results"
@@ -170,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                 file.writeText(result.resultHtml)
             }
 
-            val styleSheets = results.filter { it.resultStyling != null}[0].resultStyling
+            val styleSheets = results.find { it.resultStyling != null}?.resultStyling
 
             if (styleSheets != null) {
                 for ((name, sheet) in styleSheets.entries) {
@@ -179,10 +192,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            val intent = Intent(view.context, ShowResultsActivity::class.java)
+            startForResult.launch(intent)
         }
-
-        val intent = Intent(this, ShowResultsActivity::class.java)
-        startForResult.launch(intent)
     }
 
     private fun deleteSavedResults(resultsFolder: File) {
@@ -192,6 +204,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showResults(view: View) {
+        val folderName = "results"
+        val folder = File(filesDir, folderName)
+        var queryCount = 0
+        val resultCount = folder.listFiles()?.filter { it.extension.endsWith("html") }?.size?: 0
+
+        lifecycleScope.launch {
+            queryCount = roomTimetableQueryListStore.data.first().roomTimetableQueryCount
+        }
+
+
+        println("$queryCount + $resultCount")
+
+        if ((queryCount >= 0 && resultCount == 0) || (queryCount < resultCount)) {
+            Toast.makeText(this, "Upload new queries", Toast.LENGTH_SHORT).show()
+            return;
+        } else if (resultCount == 0) {
+            Toast.makeText(this, "Not queries saved", Toast.LENGTH_SHORT).show()
+            return;
+        }
+
         val intent = Intent(this, ShowResultsActivity::class.java)
         startForResult.launch(intent)
     }
