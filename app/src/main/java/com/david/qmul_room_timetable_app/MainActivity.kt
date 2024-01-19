@@ -68,15 +68,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun saveRoomTimetableQuery(roomTimetableQuery: RoomTimetableQuery) {
-        var currentData = roomTimetableQueryListStore.data.first()
+        val currentData = roomTimetableQueryListStore.data.first()
         val updatedData = currentData.toBuilder()
             .addRoomTimetableQuery(roomTimetableQuery)
             .build()
 
         roomTimetableQueryListStore.updateData { updatedData }
-
-        currentData = roomTimetableQueryListStore.data.first()
-        Toast.makeText(this, "Entries: ${currentData.roomTimetableQueryCount}", Toast.LENGTH_SHORT).show()
         showRoomTimetableQueries()  // Call will add the next query to the query table
     }
 
@@ -155,8 +152,17 @@ class MainActivity : AppCompatActivity() {
     private fun deleteSavedResult(index: Int) {
         val folderName = "results"
         val folder = File(filesDir, folderName)
+        val resultCount = folder.listFiles()?.filter { it.extension.endsWith("html") }?.size?: 0
 
-        folder.listFiles()?.find { it.name == "query_$index.html" }?.delete()
+        if (index == resultCount - 1) {
+            folder.listFiles()?.find { it.name == "query_$index.html" }?.delete()
+        } else {
+            for (i in index until resultCount - 1) {
+                val file = File(folder, "query_${i + 1}.html")
+                file.renameTo(File(folder, "query_${i}.html"))
+                if (i == resultCount - 2) folder.listFiles()?.find { it.name == "query_${i + 1}.html" }?.delete()
+            }
+        }
     }
 
     fun submitRoomTimetableQueries(view: View) {
@@ -213,10 +219,7 @@ class MainActivity : AppCompatActivity() {
             queryCount = roomTimetableQueryListStore.data.first().roomTimetableQueryCount
         }
 
-
-        println("$queryCount + $resultCount")
-
-        if ((queryCount >= 0 && resultCount == 0) || (queryCount < resultCount)) {
+        if (queryCount != resultCount) {
             Toast.makeText(this, "Upload new queries", Toast.LENGTH_SHORT).show()
             return;
         } else if (resultCount == 0) {
