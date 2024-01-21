@@ -40,7 +40,6 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: RoomTimetableQuery)
         webClient.waitForBackgroundJavaScript(3000)
         page = webClient.currentWindow.enclosedPage as HtmlPage
 
-
         val roomsDropdown: HtmlSelect = page.getElementByName("dlObject")
         for (room in roomTimetableQuery.roomsList) {
             roomsDropdown.getOptionByText(room).setSelected(true)
@@ -59,8 +58,6 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: RoomTimetableQuery)
 
         val viewTimetableBtn: HtmlSubmitInput = page.getHtmlElementById("bGetTimetable")
         viewTimetableBtn.click<HtmlPage>()
-
-        webClient.waitForBackgroundJavaScript(3000)
 
         page = webClient.currentWindow.enclosedPage as HtmlPage
 
