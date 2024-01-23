@@ -39,6 +39,7 @@ class ShowResultsActivity : AppCompatActivity() {
         loadResults()
         showResult()
 
+        prevButton.isEnabled = false
 //        WebView.setWebContentsDebuggingEnabled(true)
     }
 
@@ -61,6 +62,8 @@ class ShowResultsActivity : AppCompatActivity() {
             currentIndex--
             showResult()
         }
+
+        grayOutButtons(currentIndex)
     }
 
     fun showNextResult(view: View) {
@@ -68,6 +71,13 @@ class ShowResultsActivity : AppCompatActivity() {
             currentIndex++
             showResult()
         }
+
+        grayOutButtons(currentIndex)
+    }
+
+    private fun grayOutButtons(index: Int) {
+        prevButton.isEnabled = index != 0
+        nextButton.isEnabled = index != results.size - 1
     }
 
 }

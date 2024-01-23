@@ -19,21 +19,21 @@
         <ImageButton
             android:id="@+id/prevButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@color/button_colors"
+            android:contentDescription="Previous"
             android:onClick="showPreviousResult"
-            android:src="@drawable/ic_left_arrow"
-            android:contentDescription="Previous" />
+            android:src="@drawable/ic_left_arrow" />
 
         <ImageButton
             android:id="@+id/nextButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@color/button_colors"
+            android:contentDescription="Next"
             android:onClick="showNextResult"
-            android:src="@drawable/ic_right_arrow"
-            android:contentDescription="Next" />
+            android:src="@drawable/ic_right_arrow" />
     </LinearLayout>
 </RelativeLayout>
