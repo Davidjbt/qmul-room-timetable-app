@@ -21,19 +21,23 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@color/button_colors"
+            android:background="@drawable/button_background"
             android:contentDescription="Previous"
             android:onClick="showPreviousResult"
-            android:src="@drawable/ic_left_arrow" />
+            android:src="@drawable/ic_left_arrow"
+            android:foreground="?android:selectableItemBackground"
+            android:stateListAnimator="@null" />
 
         <ImageButton
             android:id="@+id/nextButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@color/button_colors"
+            android:background="@drawable/button_background"
             android:contentDescription="Next"
             android:onClick="showNextResult"
-            android:src="@drawable/ic_right_arrow" />
+            android:src="@drawable/ic_right_arrow"
+            android:foreground="?android:selectableItemBackground"
+            android:stateListAnimator="@null" />
     </LinearLayout>
 </RelativeLayout>
