@@ -6,6 +6,7 @@ import android.webkit.WebView
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
+import java.time.LocalDate
 
 private const val RESULT_FOLDER_NAME = "results"
 
@@ -45,7 +46,8 @@ class ShowResultsActivity : AppCompatActivity() {
 
     private fun loadResults() {
         val folder = File(filesDir, RESULT_FOLDER_NAME)
-        val resultsFiles = folder.listFiles() {_, name -> name.endsWith(".html")}
+        val currentDay = LocalDate.now().dayOfWeek.toString()
+        val resultsFiles = folder.listFiles { _, name -> name.endsWith("${currentDay}.html")}
 
         resultsFiles?.forEach { results.add(it.readText()) }
     }

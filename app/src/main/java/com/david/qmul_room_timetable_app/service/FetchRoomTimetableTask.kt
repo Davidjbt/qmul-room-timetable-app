@@ -9,10 +9,11 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage
 import com.gargoylesoftware.htmlunit.html.HtmlSelect
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput
 import kotlinx.coroutines.Runnable
-import java.time.LocalDate
 import java.util.Locale
 
-class FetchRoomTimetableTask(private val roomTimetableQuery: RoomTimetableQuery) : Runnable {
+class FetchRoomTimetableTask(
+    private val roomTimetableQuery: RoomTimetableQuery,
+    val day: String) : Runnable {
 
     lateinit var roomTimetableHtml: String
     var roomTimetableCss: HashMap<String, String>? = null
@@ -49,7 +50,6 @@ class FetchRoomTimetableTask(private val roomTimetableQuery: RoomTimetableQuery)
         weeksDropdown.getOptionByText("All Weeks").setSelected(false)
         weeksDropdown.getOptionByText("This Week").setSelected(true)
 
-        val day = LocalDate.now().dayOfWeek.toString()
         val formattedDay = day[0].toString() + day.substring(1).lowercase(Locale.getDefault())
         val daysDropdown: HtmlSelect = page.getElementByName("lbDays")
 
