@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit
 
 class RoomTimetableService {
 
-
     companion object {
         private val WEEKDAYS = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY")
     }
@@ -17,11 +16,12 @@ class RoomTimetableService {
         val executorService = Executors.newFixedThreadPool(nThreads)
 
         val currentDay = LocalDate.now().dayOfWeek.toString()
+        val week = if (WEEKDAYS.contains(currentDay)) "This Week" else "Next Week"
         val tasks = mutableListOf<FetchRoomTimetableTask>()
 
         for (roomTimetableQuery in roomTimetableQueries) {
-            for (day in WEEKDAYS.slice(WEEKDAYS.indexOf(currentDay)..<WEEKDAYS.size)) {
-                tasks.add(FetchRoomTimetableTask(roomTimetableQuery, day))
+            for (day in WEEKDAYS.slice(WEEKDAYS.indexOf("MONDAY")..<WEEKDAYS.size)) {
+                tasks.add(FetchRoomTimetableTask(roomTimetableQuery, day, week))
             }
         }
 

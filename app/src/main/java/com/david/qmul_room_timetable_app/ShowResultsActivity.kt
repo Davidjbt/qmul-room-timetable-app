@@ -19,6 +19,10 @@ class ShowResultsActivity : AppCompatActivity() {
     private val results = mutableListOf<String>()
     private var currentIndex = 0
 
+    companion object {
+        private val WEEKDAYS = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_results)
@@ -47,7 +51,8 @@ class ShowResultsActivity : AppCompatActivity() {
     private fun loadResults() {
         val folder = File(filesDir, RESULT_FOLDER_NAME)
         val currentDay = LocalDate.now().dayOfWeek.toString()
-        val resultsFiles = folder.listFiles { _, name -> name.endsWith("${currentDay}.html")}
+        val day = if (WEEKDAYS.contains(currentDay)) currentDay else "MONDAY"
+        val resultsFiles = folder.listFiles { _, name -> name.endsWith("${day}.html")}
 
         resultsFiles?.forEach { results.add(it.readText()) }
     }

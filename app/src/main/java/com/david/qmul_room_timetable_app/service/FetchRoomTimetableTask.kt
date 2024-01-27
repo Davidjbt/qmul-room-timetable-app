@@ -13,7 +13,8 @@ import java.util.Locale
 
 class FetchRoomTimetableTask(
     private val roomTimetableQuery: RoomTimetableQuery,
-    val day: String) : Runnable {
+    val day: String,
+    private val week: String) : Runnable {
 
     lateinit var roomTimetableHtml: String
     var roomTimetableCss: HashMap<String, String>? = null
@@ -48,7 +49,7 @@ class FetchRoomTimetableTask(
 
         val weeksDropdown: HtmlSelect = page.getElementByName("lbWeeks")
         weeksDropdown.getOptionByText("All Weeks").setSelected(false)
-        weeksDropdown.getOptionByText("This Week").setSelected(true)
+        weeksDropdown.getOptionByText(week).setSelected(true)
 
         val formattedDay = day[0].toString() + day.substring(1).lowercase(Locale.getDefault())
         val daysDropdown: HtmlSelect = page.getElementByName("lbDays")
