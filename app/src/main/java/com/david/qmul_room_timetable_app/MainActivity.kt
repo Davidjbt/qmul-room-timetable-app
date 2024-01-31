@@ -117,6 +117,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 linearLayout.addView(queryView)
+
+                println(roomTimetableQuery.isFetched)
             }
         }
 
@@ -198,6 +200,18 @@ class MainActivity : AppCompatActivity() {
                     file.writeText(sheet)
                 }
             }
+
+//            for ((index, currentQuery) in currentData.roomTimetableQueryList.withIndex()) {
+//                currentData.toBuilder()
+//                    .setRoomTimetableQuery(index, currentQuery
+//                        .toBuilder()
+//                        .setIsFetched(true)
+//                        .build()
+//                    )
+//            }
+//
+//            roomTimetableQueryListStore.updateData { currentData }
+            showRoomTimetableQueries()  // Call will add the next query to the query table
 
             val intent = Intent(view.context, ShowResultsActivity::class.java)
             startForResult.launch(intent)

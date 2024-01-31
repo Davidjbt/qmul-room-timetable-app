@@ -177,6 +177,7 @@ class AddRoomTimetable : AppCompatActivity() {
             .setCampus(selectedCampus.campus)
             .setBuilding(selectedBuilding.building)
             .addAllRooms(selectedRooms)
+            .setIsFetched(false)
             .build()
 
         intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())

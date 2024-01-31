@@ -12,5 +12,6 @@ message RoomTimetableQuery {
   string campus = 1;
   string building = 2;
   repeated string rooms = 3;
+  bool isFetched = 4;
 }
 

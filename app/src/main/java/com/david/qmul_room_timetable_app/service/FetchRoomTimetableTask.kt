@@ -44,6 +44,7 @@ class FetchRoomTimetableTask(
 
         val roomsDropdown: HtmlSelect = page.getElementByName("dlObject")
         for (room in roomTimetableQuery.roomsList) {
+            // TODO: not found here
             roomsDropdown.getOptionByText(room).setSelected(true)
         }
 
