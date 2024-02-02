@@ -117,8 +117,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 linearLayout.addView(queryView)
-
-                println(roomTimetableQuery.isFetched)
             }
         }
 
@@ -201,16 +199,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-//            for ((index, currentQuery) in currentData.roomTimetableQueryList.withIndex()) {
-//                currentData.toBuilder()
-//                    .setRoomTimetableQuery(index, currentQuery
-//                        .toBuilder()
-//                        .setIsFetched(true)
-//                        .build()
-//                    )
-//            }
-//
-//            roomTimetableQueryListStore.updateData { currentData }
+            val updatedQueries = currentData.roomTimetableQueryList.map { currentQuery ->
+                currentQuery.toBuilder()
+                    .setIsFetched(true)
+                    .build()
+            }
+
+            roomTimetableQueryListStore.updateData {
+                currentData.toBuilder()
+                    .clearRoomTimetableQuery()
+                    .addAllRoomTimetableQuery(updatedQueries)
+                    .build()
+            }
+
             showRoomTimetableQueries()  // Call will add the next query to the query table
 
             val intent = Intent(view.context, ShowResultsActivity::class.java)
@@ -221,7 +222,6 @@ class MainActivity : AppCompatActivity() {
     private fun deleteSavedResults(resultsFolder: File) {
         resultsFolder.listFiles()
             ?.filter { it.extension.endsWith("html") }
-            ?.forEach { it.delete() ; println("deleting")}
     }
 
     fun showResults(view: View) {
