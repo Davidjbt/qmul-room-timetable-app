@@ -30,6 +30,8 @@ class AddRoomTimetable : AppCompatActivity() {
     private lateinit var selectedRoomsBoolean: BooleanArray
     private lateinit var roomsArray: Array<String>
 
+    private lateinit var previousRoomTimeQuery: RoomTimetableQuery
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_room_timetable)
@@ -69,6 +71,7 @@ class AddRoomTimetable : AppCompatActivity() {
     private fun initialiseForm(intent: Intent) {
         val intentData = getSerializableExtra(intent, "roomTimetableQuery", ByteArray::class.java)
         val roomTimetableQuery = RoomTimetableQuery.parseFrom(intentData)
+        previousRoomTimeQuery = RoomTimetableQuery.parseFrom(intentData)
 
         autoCompleteTextViewCampus.setText(roomTimetableQuery.campus, false)
         autoCompleteTextViewBuilding.setText(roomTimetableQuery.building, false)
@@ -173,16 +176,31 @@ class AddRoomTimetable : AppCompatActivity() {
             return;
         }
 
+        var isFetched = false
+        val index = intent.getIntExtra("index", -1)
+
+        if (index != -1) { // if query is unchanged then result was already fetched (true), else false
+            isFetched = !hasRoomTimetableQueryChanged()
+        }
+
         val roomTimetableQuery = RoomTimetableQuery.newBuilder()
             .setCampus(selectedCampus.campus)
             .setBuilding(selectedBuilding.building)
             .addAllRooms(selectedRooms)
-            .setIsFetched(false)
+            .setIsFetched(isFetched)
             .build()
 
         intent.putExtra("roomTimetableQuery", roomTimetableQuery.toByteArray())
-        setResult(Activity.RESULT_OK, intent.putExtra("index", intent.getIntExtra("index", -1)))
+        setResult(Activity.RESULT_OK, intent.putExtra("index", index))
         finish()
+    }
+
+    private fun hasRoomTimetableQueryChanged(): Boolean {
+        if (!previousRoomTimeQuery.campus.equals(selectedCampus.campus)) return true
+        if (!previousRoomTimeQuery.building.equals(selectedBuilding.building)) return true
+        if (!previousRoomTimeQuery.roomsList.containsAll(selectedRooms)) return true
+
+        return false
     }
 
 }
