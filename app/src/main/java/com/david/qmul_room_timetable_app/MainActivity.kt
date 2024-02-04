@@ -21,7 +21,6 @@ import com.david.qmul_room_timetable_app.util.GetSerializableExtra.Companion.get
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
-import java.time.LocalDate
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -212,8 +211,6 @@ class MainActivity : AppCompatActivity() {
                     .build()
             }
 
-            showRoomTimetableQueries()  // Call will add the next query to the query table
-
             val intent = Intent(view.context, ShowResultsActivity::class.java)
             startForResult.launch(intent)
         }
@@ -221,25 +218,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteSavedResults(resultsFolder: File) {
         resultsFolder.listFiles()
-            ?.filter { it.extension.endsWith("html") }
+            ?.find { it.extension == "html" }
+            ?.delete()
     }
 
     fun showResults(view: View) {
-        val folderName = "results"
-        val folder = File(filesDir, folderName)
-        val currentDay = LocalDate.now().dayOfWeek.toString()
         var queryCount = 0
-        val resultCount = folder.listFiles()
-            ?.filter { it.name.endsWith("${currentDay}.html") }
-            ?.size?: 0
+        var allFetched = false
 
         lifecycleScope.launch {
-            queryCount = roomTimetableQueryListStore.data.first().roomTimetableQueryCount
+            val data = roomTimetableQueryListStore.data.first()
+            queryCount = data.roomTimetableQueryCount
+            allFetched = !data.roomTimetableQueryList
+                .map { it.isFetched }
+                .contains(false)
         }
 
-        if (queryCount != resultCount) {
+        if (!allFetched) {
             Toast.makeText(this, "Upload new queries", Toast.LENGTH_SHORT).show()
-        } else if (resultCount == 0) {
+        } else if (queryCount == 0) {
             Toast.makeText(this, "Not queries saved", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, ShowResultsActivity::class.java)

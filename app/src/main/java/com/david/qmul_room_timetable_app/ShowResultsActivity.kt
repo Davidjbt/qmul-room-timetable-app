@@ -44,7 +44,7 @@ class ShowResultsActivity : AppCompatActivity() {
         loadResults()
         showResult()
 
-        prevButton.isEnabled = false
+        grayOutButtons(currentIndex)
 //        WebView.setWebContentsDebuggingEnabled(true)
     }
 
