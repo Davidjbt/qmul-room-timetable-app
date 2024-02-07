@@ -24,10 +24,16 @@ import java.io.File
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
+private const val LAST_FETCH_STORE_FILE_NAME = "last_fetch.pb"
 
 private val Context.roomTimetableQueryListStore: DataStore<RoomTimetableQueryList> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
     serializer = RoomTimetableQueryListSerializer
+)
+
+private val Context.lastFetchStore: DataStore<LastFetch> by dataStore(
+    fileName = LAST_FETCH_STORE_FILE_NAME,
+    serializer = LastFetchSerializer
 )
 
 class MainActivity : AppCompatActivity() {
