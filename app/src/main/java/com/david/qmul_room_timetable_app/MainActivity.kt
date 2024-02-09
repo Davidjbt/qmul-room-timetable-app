@@ -21,6 +21,8 @@ import com.david.qmul_room_timetable_app.util.GetSerializableExtra.Companion.get
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 private const val ROOM_TIMETABLE_QUERY_LIST_NAME = "room_timetable_query_list"
 private const val DATA_STORE_FILE_NAME = "room_timetable_query_list.pb"
@@ -42,6 +44,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         showRoomTimetableQueries()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        checkIfFetchIsNeeded()
+    }
+
+    private fun checkIfFetchIsNeeded() {
+        lifecycleScope.launch {
+            val lastFetchDate = LocalDate.parse(lastFetchStore.data.first().date)
+            val currentDate = LocalDate.now()
+
+            if (currentDate.dayOfWeek == DayOfWeek.SATURDAY) {
+                if (!lastFetchDate.isEqual(currentDate)) {
+                    submitRoomTimetableQueries(View(this@MainActivity))
+                }
+            } else if (currentDate.dayOfWeek == DayOfWeek.SUNDAY) {
+                if (!lastFetchDate.equals(currentDate) && !lastFetchDate.plusDays(1).equals(currentDate)) {
+                    submitRoomTimetableQueries(View(this@MainActivity))
+                }
+            }
+        }
+    }
+
+    private fun updateFetchStatus() {
+
     }
 
     fun addRoomTimetableQuery(view: View) {
