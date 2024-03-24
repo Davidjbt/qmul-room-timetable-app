@@ -50,10 +50,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkIfFetchIsNeeded() {
         lifecycleScope.launch {
-            val lastFetchDate = LocalDate.parse(lastFetchStore.data.first().date)
             val currentDate = LocalDate.now()
+            val lastFetchDate = if (!lastFetchStore.data.first().date.equals(""))
+                                    LocalDate.parse(lastFetchStore.data.first().date)
+                                else
+                                    currentDate
 
-            if (currentDate.dayOfWeek == DayOfWeek.SATURDAY) {
+            if (currentDate.equals(lastFetchDate)) {
+                return@launch
+            } else if (currentDate.dayOfWeek == DayOfWeek.SATURDAY) {
                 if (!lastFetchDate.isEqual(currentDate)) {
                     submitRoomTimetableQueries(View(this@MainActivity))
                 }
