@@ -1,14 +1,14 @@
 package com.david.qmul_room_timetable_app.service
 
 import com.david.qmul_room_timetable_app.RoomTimetableQuery
-import com.gargoylesoftware.htmlunit.BrowserVersion
-import com.gargoylesoftware.htmlunit.TextPage
-import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor
-import com.gargoylesoftware.htmlunit.html.HtmlPage
-import com.gargoylesoftware.htmlunit.html.HtmlSelect
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput
 import kotlinx.coroutines.Runnable
+import org.htmlunit.BrowserVersion
+import org.htmlunit.TextPage
+import org.htmlunit.WebClient
+import org.htmlunit.html.HtmlAnchor
+import org.htmlunit.html.HtmlPage
+import org.htmlunit.html.HtmlSelect
+import org.htmlunit.html.HtmlSubmitInput
 import java.util.Locale
 
 class FetchRoomTimetableTask(
