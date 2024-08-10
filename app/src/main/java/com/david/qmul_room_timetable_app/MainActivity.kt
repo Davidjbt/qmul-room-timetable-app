@@ -211,44 +211,47 @@ class MainActivity : AppCompatActivity() {
             }
 
             val roomTimetableService = RoomTimetableService()
-            val results = roomTimetableService.getRoomTimetable(currentData.roomTimetableQueryList.toTypedArray())
 
-            val folderName = "results"
-            val folder = File(filesDir, folderName)
+            println(roomTimetableService.getRoomTimetable(currentData))
 
-            deleteSavedResults(folder)
+//            val results = roomTimetableService.getRoomTimetable(currentData.roomTimetableQueryList.toTypedArray())
 
-            if (!folder.exists()) folder.mkdir()
-
-            for ((i, result) in results.withIndex()) {
-                val file = File(folder, "query_${i}_${result.day}.html")
-                file.writeText(result.resultHtml)
-            }
-
-            val styleSheets = results.find { it.resultStyling != null}?.resultStyling
-
-            if (styleSheets != null) {
-                for ((name, sheet) in styleSheets.entries) {
-                    val file = File(folder, name)
-                    file.writeText(sheet)
-                }
-            }
-
-            val updatedQueries = currentData.roomTimetableQueryList.map { currentQuery ->
-                currentQuery.toBuilder()
-                    .setIsFetched(true)
-                    .build()
-            }
-
-            roomTimetableQueryListStore.updateData {
-                currentData.toBuilder()
-                    .clearRoomTimetableQuery()
-                    .addAllRoomTimetableQuery(updatedQueries)
-                    .build()
-            }
-
-            val intent = Intent(view.context, ShowResultsActivity::class.java)
-            startForResult.launch(intent)
+//            val folderName = "results"
+//            val folder = File(filesDir, folderName)
+//
+//            deleteSavedResults(folder)
+//
+//            if (!folder.exists()) folder.mkdir()
+//
+//            for ((i, result) in results.withIndex()) {
+//                val file = File(folder, "query_${i}_${result.day}.html")
+//                file.writeText(result.resultHtml)
+//            }
+//
+//            val styleSheets = results.find { it.resultStyling != null}?.resultStyling
+//
+//            if (styleSheets != null) {
+//                for ((name, sheet) in styleSheets.entries) {
+//                    val file = File(folder, name)
+//                    file.writeText(sheet)
+//                }
+//            }
+//
+//            val updatedQueries = currentData.roomTimetableQueryList.map { currentQuery ->
+//                currentQuery.toBuilder()
+//                    .setIsFetched(true)
+//                    .build()
+//            }
+//
+//            roomTimetableQueryListStore.updateData {
+//                currentData.toBuilder()
+//                    .clearRoomTimetableQuery()
+//                    .addAllRoomTimetableQuery(updatedQueries)
+//                    .build()
+//            }
+//
+//            val intent = Intent(view.context, ShowResultsActivity::class.java)
+//            startForResult.launch(intent)
         }
     }
 
