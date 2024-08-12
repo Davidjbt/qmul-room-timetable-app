@@ -1,6 +1,7 @@
 package com.david.qmul_room_timetable_app.network
 
-import com.david.qmul_room_timetable_app.service.RoomTimetableService
+import com.david.qmul_room_timetable_app.model.QueryResult
+import com.david.qmul_room_timetable_app.model.RoomTimetableQueryJson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,9 +17,9 @@ private val retrofit = Retrofit.Builder()
 
 interface RoomTimetableApiService {
     @POST("room/timetable")
-    suspend fun getRoomsTimetables(@Body roomTimetableQueries:  List<RoomTimetableService.RoomTimetableQueryJson>) : Array<String>
+    suspend fun getRoomsTimetables(@Body roomTimetableQueries: List<RoomTimetableQueryJson>): Array<QueryResult>
 }
 
 object RoomTimetableApi {
-    val retrofitService : RoomTimetableApiService = retrofit.create(RoomTimetableApiService::class.java)
+    val retrofitService: RoomTimetableApiService = retrofit.create(RoomTimetableApiService::class.java)
 }

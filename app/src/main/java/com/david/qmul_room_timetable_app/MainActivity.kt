@@ -39,6 +39,9 @@ private val Context.lastFetchStore: DataStore<LastFetch> by dataStore(
 )
 
 class MainActivity : AppCompatActivity() {
+
+    private val roomTimetableService = RoomTimetableService() // todo: DI
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -210,48 +213,44 @@ class MainActivity : AppCompatActivity() {
                 return@launch
             }
 
-            val roomTimetableService = RoomTimetableService()
+            val results = roomTimetableService.getRoomTimetable(currentData)
 
-            println(roomTimetableService.getRoomTimetable(currentData))
+            val folderName = "results"
+            val folder = File(filesDir, folderName)
 
-//            val results = roomTimetableService.getRoomTimetable(currentData.roomTimetableQueryList.toTypedArray())
+            deleteSavedResults(folder)
 
-//            val folderName = "results"
-//            val folder = File(filesDir, folderName)
-//
-//            deleteSavedResults(folder)
-//
-//            if (!folder.exists()) folder.mkdir()
-//
-//            for ((i, result) in results.withIndex()) {
-//                val file = File(folder, "query_${i}_${result.day}.html")
-//                file.writeText(result.resultHtml)
-//            }
-//
-//            val styleSheets = results.find { it.resultStyling != null}?.resultStyling
-//
-//            if (styleSheets != null) {
-//                for ((name, sheet) in styleSheets.entries) {
-//                    val file = File(folder, name)
-//                    file.writeText(sheet)
-//                }
-//            }
-//
-//            val updatedQueries = currentData.roomTimetableQueryList.map { currentQuery ->
-//                currentQuery.toBuilder()
-//                    .setIsFetched(true)
-//                    .build()
-//            }
-//
-//            roomTimetableQueryListStore.updateData {
-//                currentData.toBuilder()
-//                    .clearRoomTimetableQuery()
-//                    .addAllRoomTimetableQuery(updatedQueries)
-//                    .build()
-//            }
-//
-//            val intent = Intent(view.context, ShowResultsActivity::class.java)
-//            startForResult.launch(intent)
+            if (!folder.exists()) folder.mkdir()
+
+            for ((i, result) in results.withIndex()) {
+                val file = File(folder, "query_${i}_${result.day}.html")
+                file.writeText(result.resultHtml)
+            }
+
+            val styleSheets = results.find { it.resultStyling != null}?.resultStyling
+
+            if (styleSheets != null) {
+                for ((name, sheet) in styleSheets.entries) {
+                    val file = File(folder, name)
+                    file.writeText(sheet)
+                }
+            }
+
+            val updatedQueries = currentData.roomTimetableQueryList.map { currentQuery ->
+                currentQuery.toBuilder()
+                    .setIsFetched(true)
+                    .build()
+            }
+
+            roomTimetableQueryListStore.updateData {
+                currentData.toBuilder()
+                    .clearRoomTimetableQuery()
+                    .addAllRoomTimetableQuery(updatedQueries)
+                    .build()
+            }
+
+            val intent = Intent(view.context, ShowResultsActivity::class.java)
+            startForResult.launch(intent)
         }
     }
 
