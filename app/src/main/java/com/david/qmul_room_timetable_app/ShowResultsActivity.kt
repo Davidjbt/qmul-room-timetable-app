@@ -3,6 +3,8 @@ package com.david.qmul_room_timetable_app
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
@@ -15,6 +17,11 @@ class ShowResultsActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var prevButton: ImageButton
     private lateinit var nextButton: ImageButton
+
+    private lateinit var autoCompleteTextViewDay: AutoCompleteTextView
+    private lateinit var adapterDay: ArrayAdapter<String>
+//    private lateinit var dayList:List<String>
+    private lateinit var day: String
 
     private val results = mutableListOf<String>()
     private var currentIndex = 0
@@ -46,6 +53,15 @@ class ShowResultsActivity : AppCompatActivity() {
 
         grayOutButtons(currentIndex)
 //        WebView.setWebContentsDebuggingEnabled(true)
+
+        autoCompleteTextViewDay = findViewById(R.id.autoCompleteTextView6)
+        adapterDay = ArrayAdapter(this, R.layout.dropdown_item) // todo: Make days more flexible and custom to user.
+
+        autoCompleteTextViewDay.setAdapter(adapterDay)
+        autoCompleteTextViewDay.setOnItemClickListener { _, _, position, _ ->
+
+        }
+
     }
 
     private fun loadResults() {
@@ -54,7 +70,11 @@ class ShowResultsActivity : AppCompatActivity() {
         val day = if (WEEKDAYS.contains(currentDay)) currentDay else "MONDAY"
         val resultsFiles = folder.listFiles { _, name -> name.endsWith("${day}.html")}
 
-        resultsFiles?.forEach { results.add(it.readText()) }
+        println(day)
+
+        if (resultsFiles != null && resultsFiles.isNotEmpty())
+            resultsFiles.forEach { results.add(it.readText()) }
+
     }
 
     private fun showResult() {
