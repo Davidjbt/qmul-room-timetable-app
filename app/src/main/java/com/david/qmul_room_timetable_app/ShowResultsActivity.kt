@@ -21,13 +21,13 @@ class ShowResultsActivity : AppCompatActivity() {
     private lateinit var autoCompleteTextViewDay: AutoCompleteTextView
     private lateinit var adapterDay: ArrayAdapter<String>
 //    private lateinit var dayList:List<String>
-    private lateinit var day: String
+    private lateinit var selectedDay: String
 
     private val results = mutableListOf<String>()
     private var currentIndex = 0
 
     companion object {
-        private val WEEKDAYS = arrayOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY")
+        private val WEEKDAYS = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,27 +48,32 @@ class ShowResultsActivity : AppCompatActivity() {
             displayZoomControls = false
         }
 
-        loadResults()
+        var day = LocalDate.now().dayOfWeek.toString()
+        day = day[0] + day.lowercase().substring(1)
+        day = if (WEEKDAYS.contains(day)) day else "Monday"
+
+        loadResults(day)
         showResult()
 
         grayOutButtons(currentIndex)
 //        WebView.setWebContentsDebuggingEnabled(true)
 
         autoCompleteTextViewDay = findViewById(R.id.autoCompleteTextView6)
-        adapterDay = ArrayAdapter(this, R.layout.dropdown_item) // todo: Make days more flexible and custom to user.
+        adapterDay = ArrayAdapter(this, R.layout.dropdown_item, WEEKDAYS) // todo: Make days more flexible and custom to user.
 
+        autoCompleteTextViewDay.setText(day)
         autoCompleteTextViewDay.setAdapter(adapterDay)
         autoCompleteTextViewDay.setOnItemClickListener { _, _, position, _ ->
-
+            selectedDay = WEEKDAYS[position]
+            autoCompleteTextViewDay.setText(selectedDay)
+//            loadResults(selectedDay)
         }
 
     }
 
-    private fun loadResults() {
+    private fun loadResults(day: String) {
         val folder = File(filesDir, RESULT_FOLDER_NAME)
-        val currentDay = LocalDate.now().dayOfWeek.toString()
-        val day = if (WEEKDAYS.contains(currentDay)) currentDay else "MONDAY"
-        val resultsFiles = folder.listFiles { _, name -> name.endsWith("${day}.html")}
+        val resultsFiles = folder.listFiles { _, name -> name.endsWith("${day.uppercase()}.html")}
 
         println(day)
 

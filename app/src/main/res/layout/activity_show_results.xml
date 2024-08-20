@@ -5,8 +5,8 @@
 <!--    6200EE-->
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,18 +15,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:inputType="none"
-            android:text="Select Campus" />
+            android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigationLayout" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navigationLayout"
+        android:layout_below="@+id/textInputLayout2"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
 
     <LinearLayout
         android:id="@+id/navigationLayout"
@@ -53,7 +54,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@drawable/button_background"
-            android:contentDescription="Next"a
+            android:contentDescription="Next"
             android:onClick="showNextResult"
             android:src="@drawable/ic_right_arrow"
             android:foreground="?android:selectableItemBackground"
