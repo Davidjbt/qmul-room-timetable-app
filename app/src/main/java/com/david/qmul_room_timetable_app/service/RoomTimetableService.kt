@@ -14,9 +14,8 @@ class RoomTimetableService {
 
     suspend fun getRoomTimetable(roomTimetableQueries: RoomTimetableQueryList): Array<QueryResult> {
         val currentDay = LocalDate.now().dayOfWeek.toString()
-
         val week = if (WEEKDAYS.contains(currentDay)) "This Week" else "Next Week"
-        val roomTimetableQueriesJson = protoToJson(roomTimetableQueries, currentDay, week)
+        val roomTimetableQueriesJson = WEEKDAYS.flatMap { day -> protoToJson(roomTimetableQueries, day, week) }
 
         return RoomTimetableApi.retrofitService.getRoomsTimetables(roomTimetableQueriesJson)
     }

@@ -61,25 +61,23 @@ class ShowResultsActivity : AppCompatActivity() {
         autoCompleteTextViewDay = findViewById(R.id.autoCompleteTextView6)
         adapterDay = ArrayAdapter(this, R.layout.dropdown_item, WEEKDAYS) // todo: Make days more flexible and custom to user.
 
-        autoCompleteTextViewDay.setText(day)
+        autoCompleteTextViewDay.setText(day) // todo: test with more queries(rooms)
         autoCompleteTextViewDay.setAdapter(adapterDay)
         autoCompleteTextViewDay.setOnItemClickListener { _, _, position, _ ->
             selectedDay = WEEKDAYS[position]
-            autoCompleteTextViewDay.setText(selectedDay)
-//            loadResults(selectedDay)
+            autoCompleteTextViewDay.setText(selectedDay, false)
+            loadResults(selectedDay)
+            showResult()
         }
-
     }
 
     private fun loadResults(day: String) {
         val folder = File(filesDir, RESULT_FOLDER_NAME)
         val resultsFiles = folder.listFiles { _, name -> name.endsWith("${day.uppercase()}.html")}
 
-        println(day)
-
+        results.clear()
         if (resultsFiles != null && resultsFiles.isNotEmpty())
             resultsFiles.forEach { results.add(it.readText()) }
-
     }
 
     private fun showResult() {
